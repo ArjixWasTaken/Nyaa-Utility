@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Nyaa Utility",
+  "version": "0.1",
+   "browser_action": {
+   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://nyaa.si/*",
+	"https://sukebei.nyaa.si/*",
+	"https://meowinjapanese.cf/*"
+      ],
+      "js": ["nyaaDeadTorrents.js"]
+    }
+  ]
+}
