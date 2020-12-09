@@ -56,7 +56,7 @@ if (document.location.href.includes("/profile")) {
         var AutoNextPage = `<div class="row">
         <div class="form-group col-md-4">
                 <input id="AutoNextPage" name="AutoNextPage" type="checkbox" value="n">
-                <label for="AutoNextPage">Automatically go to next page</label>
+                <label for="AutoNextPage">Automatically go to next page if current page is empty.</label>
         </div>
     </div>`
         $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + settings)
