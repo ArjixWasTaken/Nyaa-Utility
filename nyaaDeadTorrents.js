@@ -18,12 +18,6 @@ if (!localStorage.getItem("NyaaRemoveRule")) {
 }
 
 
-function submitSetting() {
-    let value = document.getElementById("removeDeadTorrentsRule").value
-    localStorage.setItem("NyaaRemoveRule", value)
-}
-
-
 function removeTorrent(torrent, count) {
     torrent.parentNode.removeChild(torrent)
     console.log("Removed torrent with index of: " + count.toString())
@@ -58,27 +52,5 @@ window.addEventListener("load", function () {
             let nextPage = pagination[pagination.length - 1].childNodes[0].href
             window.location.replace(nextPage)
         }
-    } else if (document.location.href == "https://nyaa.si/profile") {
-        if (localStorage.getItem("NyaaRemoveRule") == "seeds") {
-            var choiceOne = "<option selected>"
-        } else { var choiceOne = "<option>" }
-        if (localStorage.getItem("NyaaRemoveRule") == "leachers") {
-            var choiceTwo = "<option selected>"
-        } else { var choiceTwo = "<option>" }
-        if (localStorage.getItem("NyaaRemoveRule") == "both") {
-            var choiceThree = "<option selected>"
-        } else { var choiceThree = "<option>" }
-        var settings = `<div class="row">
-					<div class="form-group col-md-4">
-							<p>DeadTorrent removeRule:
-                            <select id="removeDeadTorrentsRule">` +
-            choiceOne + "seeds</option>" +
-            choiceTwo + "leachers</option>" +
-            choiceThree + "both</option>" +
-            `</select></p>
-					          </div>
-				            </div>`
-        $("#preferences-change > form > .row").first().after(settings)
-        document.getElementById("submit_settings").addEventListener('click', () => { submitSetting(); }, false);
     }
 }, false)
