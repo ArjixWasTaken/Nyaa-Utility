@@ -46,7 +46,7 @@ if (document.location.href.includes("/profile")) {
         var userBlock = `<div class="row">
     <div class="form-group col-md-4">
             <input id="disableUserBlocks" name="disableUserBlocks" type="checkbox" value="n">
-            <label for="disableUserBlocks">Disable the user block buttons</label>
+            <label for="disableUserBlocks">Disable the user blocking function</label>
     </div>
 </div>`
         $("#preferences-change > form > .row").first().after(userBlock + settings)
