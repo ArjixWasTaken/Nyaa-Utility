@@ -46,12 +46,19 @@ if (document.location.href.includes("/view/") && localStorage.getItem("NyaaUserB
             comments = document.querySelectorAll("div.panel.panel-default.comment-panel")
             let title = commentsTitle.innerText.split("- ")[0] + "- " + comments.length
             commentsTitle.innerText = title
-
+            // let css = `<style>
+            // .nyaaUserBlock {
+            //     position: fixed;
+            //     bottom: 0;
+            //     right: 0;
+            // }
+            // </style>`
+            // $("body").after(css)
             for (let i = 0; i < comments.length; i++) {
                 $('<button type="button" id="user_' + comments[i].querySelector("a").href + "_iter_" + i + '"' + 'class="btn btn-xs btn-danger pull-right">' +
                     "Block User" +
                     "</button>").appendTo(comments[i].querySelector("div.col-md-10.comment"))
-                document.getElementById('user_' + comments[i].querySelector("a").href + "_iter_" + i).addEventListener('click', () => { blockUser(comments[i].querySelector("a").href + "_iter_" + i); }, false);
+                document.getElementById('user_' + comments[i].querySelector("a").href + "_iter_" + i).onclick = () => { blockUser(comments[i].querySelector("a").href + "_iter_" + i); } //.addEventListener('click', () => { blockUser(comments[i].querySelector("a").href + "_iter_" + i); }, false);
             }
         }, false)
     })();
