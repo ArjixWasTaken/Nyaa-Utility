@@ -16,7 +16,9 @@
 if (!localStorage.getItem("NyaaRemoveRule")) {
     localStorage.setItem("NyaaRemoveRule", "seeds")
 }
-
+if (!localStorage.getItem("AutoNextPage")) {
+    localStorage.setItem("AutoNextPage", "false")
+}
 
 function removeTorrent(torrent, count) {
     torrent.parentNode.removeChild(torrent)
@@ -47,7 +49,7 @@ window.addEventListener("load", function () {
                 torrentsCount = torrentsCount - 1
             }
         }
-        if (torrentsCount <= 0) {
+        if (torrentsCount <= 0 && localStorage.getItem("AutoNextPage") == "true") {
             let pagination = document.querySelectorAll("ul.pagination > li")
             let nextPage = pagination[pagination.length - 1].childNodes[0].href
             window.location.replace(nextPage)

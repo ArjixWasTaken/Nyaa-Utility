@@ -32,6 +32,7 @@ if (document.location.href.includes("/view/") && localStorage.getItem("NyaaUserB
         window.addEventListener("load", function () {
             var comments = document.querySelectorAll("div.panel.panel-default.comment-panel")
             let blockedList = localStorage.getItem("nyaa_blocked_users") || []
+            console.log(blockedList)
             if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
             for (let i = 0; i < comments.length; i++) {
                 let user = comments[i].querySelector("a").href

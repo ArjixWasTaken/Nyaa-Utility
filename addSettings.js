@@ -21,6 +21,10 @@ if (document.location.href.includes("/profile")) {
         //nyaaUserBlock
         value = document.querySelector("input#disableUserBlocks").checked
         localStorage.setItem("NyaaUserBlocks", value.toString())
+
+        //AutoNextPage
+        value = document.querySelector("input#AutoNextPage").checked
+        localStorage.setItem("AutoNextPage", value.toString())
     }
 
     if (document.location.href == "https://nyaa.si/profile") {
@@ -49,9 +53,18 @@ if (document.location.href.includes("/profile")) {
             <label for="disableUserBlocks">Disable the user blocking function</label>
     </div>
 </div>`
-        $("#preferences-change > form > .row").first().after(userBlock + settings)
+        var AutoNextPage = `<div class="row">
+        <div class="form-group col-md-4">
+                <input id="AutoNextPage" name="AutoNextPage" type="checkbox" value="n">
+                <label for="AutoNextPage">Automatically go to next page</label>
+        </div>
+    </div>`
+        $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + settings)
         if (localStorage.getItem("NyaaUserBlocks") == "true") {
             document.querySelector("input#disableUserBlocks").checked = true
+        }
+        if (localStorage.getItem("AutoNextPage") == "true") {
+            document.querySelector("input#AutoNextPage").checked = true
         }
 
         document.getElementById("submit_settings").addEventListener('click', () => { submitSetting(); }, false);
