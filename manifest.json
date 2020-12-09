@@ -5,15 +5,23 @@
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "browser_action": {
-   },
+    "default_popup": "./popup/popup.html"
+  },
+  "permissions": [
+    "downloads"
+  ],
   "content_scripts": [
     {
       "matches": [
         "https://nyaa.si/*",
-	"https://sukebei.nyaa.si/*",
-	"https://meowinjapanese.cf/*"
+        "https://sukebei.nyaa.si/*",
+        "https://meowinjapanese.cf/*"
       ],
-      "js": ["nyaaDeadTorrents.js"]
+      "js": [
+        "jquery-3.5.1.min.js",
+        "nyaaDeadTorrents.js",
+        "nyaaUserBlock.js"
+      ]
     }
   ]
 }
