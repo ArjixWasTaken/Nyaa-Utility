@@ -19,7 +19,9 @@ if (!localStorage.getItem("NyaaRemoveRule")) {
 if (!localStorage.getItem("AutoNextPage")) {
     localStorage.setItem("AutoNextPage", "false")
 }
-
+if (!localStorage.getItem("NyaaUserBlocks")) {
+    localStorage.setItem("NyaaUserBlocks", "true")
+}
 function removeTorrent(torrent, count) {
     torrent.parentNode.removeChild(torrent)
     console.log("Removed torrent with index of: " + count.toString())

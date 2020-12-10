@@ -12,6 +12,19 @@
 // @grant        GM.getValue
 // ==/UserScript==
 
+function removeItemAll(arr, value) {
+    var i = 0;
+    while (i < arr.length) {
+        if (arr[i] === value) {
+            arr.splice(i, 1);
+        } else {
+            ++i;
+        }
+    }
+    return arr;
+}
+
+
 if (document.location.href.includes("/profile")) {
     function submitSetting() {
         // NyaaDeadTorrents
@@ -26,7 +39,20 @@ if (document.location.href.includes("/profile")) {
         value = document.querySelector("input#AutoNextPage").checked
         localStorage.setItem("AutoNextPage", value.toString())
     }
+    function unblockUser(user, userElement) {
+        var blockedList = localStorage.getItem("nyaa_blocked_users") || []
+        if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
+        for (let i = 0; i < blockedList.length; i++) {
+            if (blockedList[i] == user) {
+                let dad = userElement.parentNode
+                userElement.parentNode.parentNode.removeChild(dad)
+                localStorage.setItem("nyaa_blocked_users", removeItemAll(blockedList, user).toString())
+                alert("Successfully removed user: " + user.split('/')[user.split('/').length - 1] + " from the blocked list.")
+                document.location.reload()
+            }
 
+        }
+    }
     if (document.location.href == "https://nyaa.si/profile") {
         if (localStorage.getItem("NyaaRemoveRule") == "seeds") {
             var choiceOne = "<option selected>"
@@ -44,22 +70,35 @@ if (document.location.href.includes("/profile")) {
             choiceOne + "seeds</option>" +
             choiceTwo + "leachers</option>" +
             choiceThree + "both</option>" +
-            `</select></p>
-					          </div>
-                            </div>`
-        var userBlock = `<div class="row">
-    <div class="form-group col-md-4">
+            `</select></p></div></div>`
+        var userBlock = `<div class="row"><div class="form-group col-md-4">
             <input id="disableUserBlocks" name="disableUserBlocks" type="checkbox" value="n">
-            <label for="disableUserBlocks">Disable the user blocking function</label>
-    </div>
-</div>`
-        var AutoNextPage = `<div class="row">
-        <div class="form-group col-md-4">
+            <label for="disableUserBlocks">Disable the user blocking function</label></div></div>`
+        var AutoNextPage = `<div class="row"><div class="form-group col-md-4">
                 <input id="AutoNextPage" name="AutoNextPage" type="checkbox" value="n">
-                <label for="AutoNextPage">Automatically go to next page if current page is empty.</label>
-        </div>
-    </div>`
-        $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + settings)
+                <label for="AutoNextPage">Automatically go to next page if current page is empty.</label></div></div>`
+        var list = '<div class="row"><div class="form-group col-md-4"><div id="userList"><p>Blocked Users:</p><ul id="blockedUsersList" style="display:inline-block; border:1px solid #000; padding:20px; overflow-y:auto; height: 90px; list-style-type: none; padding: 0; margin: 0;">'
+        var blockedList = localStorage.getItem("nyaa_blocked_users") || []
+        if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
+        for (let i = 0; i < blockedList.length; i++) {
+            let listItem = '<li><div class="user" id = ' + blockedList[i] + '><p class="blockedUser" style="display: inline-block;">' +
+                '<a target="_blank" href=' + blockedList[i] + '>' + blockedList[i] + '</a></p>' +
+                `<input class="btn btn-xs btn-danger pull-right" id="unBlockUser" type="button" style="margin-left: 20px; background-color: #4CAF50; border: none;" value="Unblock user"` +
+                `></input>` +
+                `<br></div></li>`
+            list += listItem
+        }
+        list += "</ul></div></div></div>"
+        $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + settings + list)
+        var unBlockUserButtons = document.querySelectorAll("input#unBlockUser")
+        for (let i = 0; i < unBlockUserButtons.length; i++) {
+            unBlockUserButtons[i].addEventListener('click', () => { unblockUser(unBlockUserButtons[i].parentNode.querySelector('a').href, unBlockUserButtons[i]) }, false)
+        }
+        if (unBlockUserButtons.length == 0) {
+            var noItems = document.createElement("li");
+            noItems.innerHTML = `<div class="user">No blocked users were found.</div>`
+            document.querySelector("ul#blockedUsersList").appendChild(noItems);
+        }
         if (localStorage.getItem("NyaaUserBlocks") == "true") {
             document.querySelector("input#disableUserBlocks").checked = true
         }
