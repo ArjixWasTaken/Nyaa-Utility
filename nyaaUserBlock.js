@@ -16,7 +16,7 @@ if (document.location.href.includes("/view/") && localStorage.getItem("NyaaUserB
         if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
         let userLink = message.split("_iter")[0]
         if (!blockedList.includes(userLink)) {
-            let choice = confirm("Are you sure you want to block: " + userLink.split("/")[userLink.split("/").length - 1] + ". This action can't be reversed.")
+            let choice = confirm("Are you sure you want to block: " + userLink.split("/")[userLink.split("/").length - 1])
             if (choice) {
                 blockedList.push(userLink)
                 localStorage.setItem("nyaa_blocked_users", blockedList.toString())
