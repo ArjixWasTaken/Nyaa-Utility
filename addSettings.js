@@ -81,6 +81,7 @@ if (document.location.href.includes("/profile")) {
         var blockedList = localStorage.getItem("nyaa_blocked_users") || []
         if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
         for (let i = 0; i < blockedList.length; i++) {
+		// thx to https://github.com/NexWasTaken for the help on making the html since i suck at it
             let listItem = '<li><div class="user" id = ' + blockedList[i] + '><p class="blockedUser" style="display: inline-block;">' +
                 '<a target="_blank" href=' + blockedList[i] + '>' + blockedList[i] + '</a></p>' +
                 `<input class="btn btn-xs btn-danger pull-right" id="unBlockUser" type="button" style="margin-left: 20px; background-color: #4CAF50; border: none;" value="Unblock user"` +
