@@ -38,6 +38,10 @@ if (document.location.href.includes("/profile")) {
         //AutoNextPage
         value = document.querySelector("input#AutoNextPage").checked
         localStorage.setItem("AutoNextPage", value.toString())
+
+        //userBlockTorrents
+        value = document.querySelector("input#userBlockTorrents").checked
+        localStorage.setItem("userBlockTorrents", value.toString())
     }
     function unblockUser(user, userElement) {
         var blockedList = localStorage.getItem("nyaa_blocked_users") || []
@@ -74,6 +78,9 @@ if (document.location.href.includes("/profile")) {
         var userBlock = `<div class="row"><div class="form-group col-md-4">
             <input id="disableUserBlocks" name="disableUserBlocks" type="checkbox" value="n">
             <label for="disableUserBlocks">Disable the user blocking function</label></div></div>`
+        var userBlockTorrents = `<div class="row"><div class="form-group col-md-4">
+            <input id="userBlockTorrents" name="userBlockTorrents" type="checkbox" value="n">
+            <label for="userBlockTorrents">Remove the torrents of blocked users.</label></div></div>`
         var AutoNextPage = `<div class="row"><div class="form-group col-md-4">
                 <input id="AutoNextPage" name="AutoNextPage" type="checkbox" value="n">
                 <label for="AutoNextPage">Automatically go to next page if current page is empty.</label></div></div>`
@@ -81,7 +88,6 @@ if (document.location.href.includes("/profile")) {
         var blockedList = localStorage.getItem("nyaa_blocked_users") || []
         if (!Array.isArray(blockedList)) { blockedList = blockedList.split(',') }
         for (let i = 0; i < blockedList.length; i++) {
-		// thx to https://github.com/NexWasTaken for the help on making the html since i suck at it
             let listItem = '<li><div class="user" id = ' + blockedList[i] + '><p class="blockedUser" style="display: inline-block;">' +
                 '<a target="_blank" href=' + blockedList[i] + '>' + blockedList[i] + '</a></p>' +
                 `<input class="btn btn-xs btn-danger pull-right" id="unBlockUser" type="button" style="margin-left: 20px; background-color: #4CAF50; border: none;" value="Unblock user"` +
@@ -90,7 +96,7 @@ if (document.location.href.includes("/profile")) {
             list += listItem
         }
         list += "</ul></div></div></div>"
-        $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + settings + list)
+        $("#preferences-change > form > .row").first().after(AutoNextPage + userBlock + userBlockTorrents + settings + list)
         var unBlockUserButtons = document.querySelectorAll("input#unBlockUser")
         for (let i = 0; i < unBlockUserButtons.length; i++) {
             unBlockUserButtons[i].addEventListener('click', () => { unblockUser(unBlockUserButtons[i].parentNode.querySelector('a').href, unBlockUserButtons[i]) }, false)
@@ -102,6 +108,9 @@ if (document.location.href.includes("/profile")) {
         }
         if (localStorage.getItem("NyaaUserBlocks") == "true") {
             document.querySelector("input#disableUserBlocks").checked = true
+        }
+        if (localStorage.getItem("userBlockTorrents") == "true") {
+            document.querySelector("input#userBlockTorrents").checked = true
         }
         if (localStorage.getItem("AutoNextPage") == "true") {
             document.querySelector("input#AutoNextPage").checked = true

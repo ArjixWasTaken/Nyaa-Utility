@@ -1,18 +1,15 @@
 {
   "manifest_version": 2,
   "name": "Nyaa Utility",
-  "version": "0.1",
+  "version": "0.2",
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "browser_action": {
     "default_popup": "./popup/popup.html"
   },
-  "permissions": [
-    "downloads"
-  ],
   "icons": {
     "16": "./assets/16.png",
-    "48": "./assets/48.png",
+    "120": "./assets/120.png",
     "128": "./assets/128.png"
   },
   "content_scripts": [
