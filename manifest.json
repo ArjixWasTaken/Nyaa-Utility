@@ -24,7 +24,8 @@
         "addSettings.js",
         "nyaaDeadTorrents.js",
         "nyaaUserBlock.js",
-        "nyaaTagUser.js"
+        "nyaaTagUser.js",
+        "mentionUser.js"
       ]
     }
   ]
