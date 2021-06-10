@@ -1,23 +1,14 @@
-// ==UserScript==
-// @name         Nyaa Mention User
-// @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  A user script that adds a button to append a user mention in the message field.
-// @author       Arjix
-// @match        https://nyaa.si/view/*
-// @require      https://code.jquery.com/jquery-3.5.1.min.js
-// ==/UserScript==
-
+//prettier-ignore
 if (document.location.href.includes("/view/")) {
 
     (function () {
         'use strict';
         window.addEventListener("load", function () {
-            const userName = document.querySelector("#navbar > ul.nav.navbar-nav.navbar-right > li > a.dropdown-toggle.visible-lg.visible-sm.visible-xs").innerText.trim()
             const textArea = document.querySelector('textarea#comment')
+            if (!textArea) return
             var comments = Array.from(document.querySelector("#collapse-comments").querySelectorAll('div.panel.panel-default.comment-panel'))
             comments = comments.map(comment => {
-                if (comment.querySelector('div.col-md-2 > p > a').innerText.trim() != userName) {
+                if (comment.querySelector('div.col-md-2 > p > a').innerText.trim() != nyaaUtility.userName) {
                     return comment
                 }
             }).filter(comment => comment != undefined)
