@@ -1,7 +1,15 @@
 // prettier-ignore
 const nyaaUtility = {
-    userName: document.querySelector("i.fa-user").parentNode.innerText.trim(),
+    userName: "guest",
     utils: {
+        createElement: (el, obj={}) => {
+            const elem = document.createElement(el)
+
+            Object.entries(obj).forEach(([key, value]) => {
+                elem[key] = value
+            })
+            return elem
+        },
         letterToBool: (letter) => {
             switch (letter) {
                 case 'y':
@@ -65,19 +73,35 @@ const nyaaUtility = {
         }
     },
     storage: {
+        system: {
+            onload: (callback) => {
+                // thanks to https://stackoverflow.com/q/21518381/13077523
+                if (!nyaaUtility.storage.system.initialized) {
+                    setTimeout(() => {
+                        nyaaUtility.storage.system.onload(callback)
+                    }, 100);
+                } else {
+                    callback();
+                }
+            },
+            initialized: false
+        },
         user: {
             values: [],
             options: {
                 "NyaaRemoveRule": "both",
                 "NyaaUserBlocks": false,
-                "AutoNextPage": true,
-                "nyaaBlockedUsers": []
+                "AutoNextPage": false,
+                "nyaaBlockedUsers": [],
+                "commentPostedAtTime": true,
+                "subscribedThreads": {},
+                "notifications": {}
             }
         },
         get: (keyName) => {
             for (let value of nyaaUtility.storage.user.values) {
-                if (value[0] == keyName) {
-                    return value[1]
+                if (value['key'] == keyName) {
+                    return value['value']
                 }
             }
             return undefined
@@ -96,36 +120,57 @@ const nyaaUtility = {
             })
             nyaaUtility.settings.save()
             return
+        },
+        del: (keyName) => {
+            nyaaUtility.storage.user.values = nyaaUtility.storage.user.values.filter(({key}) => {key !== keyName})
+            nyaaUtility.settings.save()
+            return
         }
     },
     settings: {
         load: () => {
-            const set = localStorage.getItem('NyaaUtilSettings+')
-            if (!set) {
-                localStorage.setItem("NyaaUtilSettings+", JSON.stringify(nyaaUtility.storage.user))
-                return nyaaUtility.storage.user
-            }
-            const data = JSON.parse(set)
-            nyaaUtility.storage.user = data
+            chrome.storage.sync.get("NyaaUtilSettings", function (value) {
+                if (JSON.stringify(value) == JSON.stringify({})) {
+                    nyaaUtility.settings.save(() => {nyaaUtility.settings.load()})
+                } else {
+                    nyaaUtility.storage.user = value.NyaaUtilSettings
+                    nyaaUtility.storage.system.initialized = true
+                }
+            });
         },
-        save: () => {
-            const obj = {
-                values: nyaaUtility.storage.user.values,
-                options: nyaaUtility.storage.user.options
-            }
-            localStorage.setItem("NyaaUtilSettings+", JSON.stringify(obj))
+        save: (callback=false) => {
+            chrome.storage.sync.set({NyaaUtilSettings: nyaaUtility.storage.user}, () => {
+                if (typeof callback == 'function') {
+                    callback()
+                }
+            });
         }
     }
 };
 
-nyaaUtility.settings.load(); // fetch settings from localstorage
+nyaaUtility.settings.load(); // async fetch settings
 
-console.log(
-    `%cNyaaUtility Settings %c${JSON.stringify(
-        nyaaUtility.storage.user,
-        null,
-        2
-    )}`,
-    "color: red;",
-    "color: green;"
-);
+nyaaUtility.storage.system.onload(() => {
+    nyaaUtility.userName = document
+        .querySelector("i.fa-user")
+        .parentNode.innerText.trim();
+    console.log(
+        `%cNyaaUtility Settings %c${JSON.stringify(
+            nyaaUtility.storage.user,
+            null,
+            2
+        )}`,
+        "color: red;",
+        "color: green;"
+    );
+});
+
+// adds a notifications option to the dropdown menu
+$(`.dropdown-menu > li > a[href*="/profile"]`).parent().after(`
+    <li>
+        <a href="/notifications">
+            <i class="fa fa-bell fa-fw"></i>
+            Notifications
+        </a>
+    </li>
+`);
