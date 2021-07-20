@@ -4,4 +4,4 @@ Welp, pretty much random stuff i code that enhance the nyaa website.
 [![chrome](https://user-images.githubusercontent.com/53124886/111952712-34f12300-8aee-11eb-9fdd-ad579a1eb235.png)](https://chrome.google.com/webstore/detail/nyaa-utility/ebkeahhgiefhkcehhmdnlgaaakdbmlad) 
 
 
-[<img src="https://user-images.githubusercontent.com/53124886/126341427-4a4e57aa-767a-467e-83d2-b31fa3564441.png" alt="Get this addon on firefox." width="100" height=100/>](https://addons.mozilla.org/en-US/firefox/addon/nyaa-utility/)
+[![firefox](https://user-images.githubusercontent.com/53124886/126341427-4a4e57aa-767a-467e-83d2-b31fa3564441.png)](https://addons.mozilla.org/en-US/firefox/addon/nyaa-utility/)
