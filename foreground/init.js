@@ -10,6 +10,13 @@ const nyaaUtility = {
             })
             return elem
         },
+        fetchWithErrorCatching: async (link, options = {}) => {
+            const res = await fetch(link, options);
+            if (res.status == 200) {
+                return res;
+            }
+            return undefined;
+        },
         letterToBool: (letter) => {
             switch (letter) {
                 case 'y':
@@ -22,6 +29,63 @@ const nyaaUtility = {
         },
         getDataType: (obj) => {
             return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+        },
+        stringIncludes: (string, substrings) => {
+            for (let substring of substrings) {
+                if (string.includes(substring)) {
+                    return true
+                }
+            }
+            return false
+        },
+        getData : async (id, rss=false) => {
+            const link = `${rss ? id : "https://nyaa.si/view/" +  id}`;
+        
+            let req = await nyaaUtility.utils.fetchWithErrorCatching(link, {
+                headers: {
+                    "User-Agent": navigator.userAgent,
+                },
+            });
+            if (req == undefined) {
+                await sleep(5000);
+                req = await nyaaUtility.utils.fetchWithErrorCatching(link, {
+                    headers: {
+                        "User-Agent": navigator.userAgent,
+                    },
+                });
+                if (req == undefined) {
+                    await sleep(10000);
+                    if (rss) return []
+                    return {};
+                }
+            }
+        
+            const data = await req.text();
+            const html = new window.DOMParser().parseFromString(data, `text/${rss ? "xml" : "html"}`).documentElement
+        
+            if (rss) {
+                items = []
+                html.querySelectorAll("item").forEach(el => {
+                    items.push({
+                        comments: el.getElementsByTagName("nyaa:comments")[0].innerHTML.trim(),
+                        category: el.getElementsByTagName("nyaa:categoryId")[0].innerHTML.trim(),
+                        title: el.querySelector("title").innerHTML.trim(),
+                        size: el.getElementsByTagName("nyaa:size")[0].innerHTML.trim(),
+                        timestamp: (new Date(el.querySelector("pubDate").innerHTML)).getTime(),
+                        id: el.querySelector("guid").innerHTML.match(/view\/(\d+)/)[1]
+                    })
+                })
+                return items
+            }
+        
+            return {
+                comments: html.querySelectorAll("div.panel.panel-default.comment-panel").length,
+                category: html.querySelector(`.panel-body > .row a[href*="/?c="]:nth-child(2)`).href.match(/(\d_\d)/)[1],
+                title: html.querySelector("h3.panel-title").innerText.trim(),
+                size: html.querySelector("div.panel-body > div:nth-child(4) > div:nth-child(2)").innerText.trim(),
+                timestamp: html.querySelector('div.panel-body > div:nth-child(1) > div:nth-child(4)')['data-timestamp'],
+                id        
+            }
         },
         snippets: {
             getCheckBox: (text, identifier, check) => {
@@ -95,7 +159,9 @@ const nyaaUtility = {
                 "nyaaBlockedUsers": [],
                 "commentPostedAtTime": true,
                 "subscribedThreads": {},
-                "notifications": {}
+                "FeedsTracker": {},
+                "subscribedFeeds": {},
+                "notifications": {},
             }
         },
         get: (keyName) => {
@@ -122,14 +188,14 @@ const nyaaUtility = {
             return
         },
         del: (keyName) => {
-            nyaaUtility.storage.user.values = nyaaUtility.storage.user.values.filter(({key}) => {key !== keyName})
+            nyaaUtility.storage.user.values = nyaaUtility.storage.user.values.filter(({key}) => key !== keyName)
             nyaaUtility.settings.save()
             return
         }
     },
     settings: {
         load: () => {
-            chrome.storage.sync.get("NyaaUtilSettings", function (value) {
+            chrome.storage.local.get("NyaaUtilSettings", function (value) {
                 if (JSON.stringify(value) == JSON.stringify({})) {
                     nyaaUtility.settings.save(() => {nyaaUtility.settings.load()})
                 } else {
@@ -139,7 +205,7 @@ const nyaaUtility = {
             });
         },
         save: (callback=false) => {
-            chrome.storage.sync.set({NyaaUtilSettings: nyaaUtility.storage.user}, () => {
+            chrome.storage.local.set({NyaaUtilSettings: nyaaUtility.storage.user}, () => {
                 if (typeof callback == 'function') {
                     callback()
                 }
@@ -148,9 +214,31 @@ const nyaaUtility = {
     }
 };
 
-nyaaUtility.settings.load(); // async fetch settings
+// dont initialize if the page is rss
+if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
+    nyaaUtility.settings.load(); // async fetch settings
+
+    // adds a notifications option to the dropdown menu
+    $(`.dropdown-menu > li > a[href*="/profile"]`).parent().after(`
+        <li>
+            <a href="/notifications">
+                <i class="fa fa-bell fa-fw"></i>
+                Notifications
+            </a>
+        </li>
+    `);
+
+    document.querySelector(
+        `.dropdown-menu > li > [href*="/profile"]`
+    ).innerHTML = document
+        .querySelector(`[href*="/profile"]`)
+        .innerHTML.replace("Profile", "Settings");
+}
 
 nyaaUtility.storage.system.onload(() => {
+    // nyaaUtility.storage.user.options.FeedsTracker["https://nyaa.si/?page=rss"] =
+    //     "1409339";
+    // nyaaUtility.settings.save();
     nyaaUtility.userName = document
         .querySelector("i.fa-user")
         .parentNode.innerText.trim();
@@ -164,13 +252,3 @@ nyaaUtility.storage.system.onload(() => {
         "color: green;"
     );
 });
-
-// adds a notifications option to the dropdown menu
-$(`.dropdown-menu > li > a[href*="/profile"]`).parent().after(`
-    <li>
-        <a href="/notifications">
-            <i class="fa fa-bell fa-fw"></i>
-            Notifications
-        </a>
-    </li>
-`);

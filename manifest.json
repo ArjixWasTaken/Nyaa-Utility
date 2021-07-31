@@ -6,9 +6,11 @@
     "notifications",
     "https://nyaa.si/*",
     "https://sukebei.nyaa.si/*",
-    "https://meowinjapanese.cf/*"
+    "https://meowinjapanese.cf/*",
+    "background",
+    "unlimitedStorage"
   ],
-  "version": "0.4",
+  "version": "0.7",
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "icons": {
@@ -26,17 +28,21 @@
       "js": [
         "./jquery-3.5.1.min.js",
         "./foreground/init.js",
+        "./foreground/newTorrentAnouncer.js",
+        "./foreground/notifications.js",
         "./foreground/addSettings.js",
         "./foreground/nyaaTagUser.js",
         "./foreground/mentionUser.js",
         "./foreground/nyaaDeadTorrents.js",
         "./foreground/nyaaUserBlock.js",
-        "./foreground/followTorrent.js",
-        "./foreground/notifications.js"
+        "./foreground/followTorrent.js"
       ]
     }
   ],
   "background": {
-    "scripts": ["jquery-3.5.1.min.js", "./background/background.js"]
-  }  
+    "scripts": [
+      "jquery-3.5.1.min.js",
+      "./background/background.js"
+    ]
+  }
 }
