@@ -231,12 +231,13 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
             </a>
         </li>
     `);
-
-    document.querySelector(
-        `.dropdown-menu > li > [href*="/profile"]`
-    ).innerHTML = document
-        .querySelector(`[href*="/profile"]`)
-        .innerHTML.replace("Profile", "Settings");
+    try {
+        document.querySelector(
+            `.dropdown-menu > li > [href*="/profile"]`
+        ).innerHTML = document
+            .querySelector(`[href*="/profile"]`)
+            .innerHTML.replace("Profile", "Settings");
+    } catch {}
 }
 
 nyaaUtility.storage.system.onload(() => {
