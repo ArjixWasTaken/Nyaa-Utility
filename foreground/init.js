@@ -216,6 +216,10 @@ const nyaaUtility = {
 
 // dont initialize if the page is rss
 if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
+    nyaaUtility.userName = document
+        .querySelector("i.fa-user")
+        .parentNode.innerText.trim();
+
     nyaaUtility.settings.load(); // async fetch settings
 
     // adds a notifications option to the dropdown menu
@@ -236,12 +240,6 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
 }
 
 nyaaUtility.storage.system.onload(() => {
-    // nyaaUtility.storage.user.options.FeedsTracker["https://nyaa.si/?page=rss"] =
-    //     "1409339";
-    // nyaaUtility.settings.save();
-    nyaaUtility.userName = document
-        .querySelector("i.fa-user")
-        .parentNode.innerText.trim();
     console.log(
         `%cNyaaUtility Settings %c${JSON.stringify(
             nyaaUtility.storage.user,

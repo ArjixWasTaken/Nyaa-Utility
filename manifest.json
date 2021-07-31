@@ -10,7 +10,7 @@
     "background",
     "unlimitedStorage"
   ],
-  "version": "0.7",
+  "version": "0.8",
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "icons": {
@@ -27,6 +27,7 @@
       ],
       "js": [
         "./jquery-3.5.1.min.js",
+        "./foreground/addExtensionHelp.js",
         "./foreground/init.js",
         "./foreground/newTorrentAnouncer.js",
         "./foreground/notifications.js",
