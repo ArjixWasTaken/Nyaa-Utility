@@ -237,7 +237,16 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
         ).innerHTML = document
             .querySelector(`[href*="/profile"]`)
             .innerHTML.replace("Profile", "Settings");
-    } catch {} // user is not logged in
+    } catch {
+        $(`.dropdown-menu > li > a[href*="/login"]`).parent().before(`
+        <li>
+            <a href="/settings">
+                <i class="fa fa-gear fa-fw"></i>
+                Settings
+            </a>
+        </li>
+    `);
+    } // user is not logged in
 }
 
 nyaaUtility.storage.system.onload(() => {
