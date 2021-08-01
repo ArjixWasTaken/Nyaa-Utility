@@ -1,8 +1,12 @@
 //prettier-ignore
 const markDownloaded = () => {
     const html = `
-        <label for="markDone" class="col-md-1">Mark done:</label>
-        <input type="checkbox" class="col-md-5" id="markDone" data-toggle="toggle">
+        <div class="col-md-1">Mark done:</div>
+        <div class="col-md-5">
+            <button type="button" class="btn btn-xs">
+            &nbsp;&nbsp;&nbsp; <i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
+        </div>
     `
 
     $('div.panel-body > div:nth-child(5) > div:nth-child(1)')

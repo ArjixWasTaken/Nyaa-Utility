@@ -237,12 +237,12 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
         ).innerHTML = document
             .querySelector(`[href*="/profile"]`)
             .innerHTML.replace("Profile", "Settings");
-    } catch {}
+    } catch {} // user is not logged in
 }
 
 nyaaUtility.storage.system.onload(() => {
     console.log(
-        `%cNyaaUtility Settings %c${JSON.stringify(
+        `%c${nyaaUtility.userName} - NyaaUtility Settings %c${JSON.stringify(
             nyaaUtility.storage.user,
             null,
             2

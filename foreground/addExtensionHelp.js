@@ -13,7 +13,7 @@ if (window.location.href.includes("/help")) {
     <div>
         If the extension appears to not be working, try to reset all of its data to the default settings.
         <br/>
-        You can do so by pressing the <input class="btn btn-xs btn-danger" type="button" value="Reset"> button in the settings page.
+        You can do so by pressing the <input class="btn btn-xs btn-danger" type="button" value="Reset"> button in the <a href="/profile">profile</a> page, or, if you don't have a nyaa account and can't access that location, the <a href="/settings">settings</a> page.
         <br/>
         If the above somehow didn't fix the errors, then you can go ahead and publish an issue at the <a href="https://github.com/ArjixWasTaken/Nyaa-Utility/issues">Nyaa-Utility issue tracker</a>
     </div>

@@ -92,12 +92,13 @@ const injectConfig = () => {
             nyaaUtility.storage.user.options.NyaaRemoveRule = document.querySelector("select#removeDeadTorrentsRule").value;
             nyaaUtility.storage.user.options.commentPostedAtTime = document.querySelector('#NyaaCommentDate').checked;
             nyaaUtility.settings.save()
+            window.location.reload()
         },
         false
     );
 };
 
-if (window.location.href.match(/\/profile/)) {
+if (window.location.href.includes("/profile")) {
     nyaaUtility.storage.system.onload(() => {
         {
             /*
@@ -116,4 +117,35 @@ if (window.location.href.match(/\/profile/)) {
             injectConfig();
         }
     });
+} else if (window.location.href.includes("/settings")) {
+    const container = document.querySelector("body > div.container");
+
+    document.querySelector("title").innerText = "Edit Settings :: Nyaa";
+
+    container.outerHTML = `
+    <div class="container">
+
+            <h2 style="margin-bottom: 20px;">Settings for <strong class="text-default">${nyaaUtility.userName}</strong></h2>
+
+            <div class="tab-content">
+                <div class="tab-pane fade active in" role="tabpanel" id="preferences-change" aria-labelledby="preferences-change-tab">
+                    <form>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                    <input id="hide_comments" name="hide_comments" type="checkbox" value="y">
+                                    <label for="hide_comments">Hide comments by default</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input class="btn btn-primary" id="submit_settings" name="submit_settings" type="button" value="Update">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr>
+		</div>
+        `;
+    nyaaUtility.storage.system.onload(injectConfig);
 }
