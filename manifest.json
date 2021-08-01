@@ -36,8 +36,7 @@
         "./foreground/mentionUser.js",
         "./foreground/nyaaDeadTorrents.js",
         "./foreground/nyaaUserBlock.js",
-        "./foreground/followTorrent.js",
-        "./foreground/markDownloaded.js"
+        "./foreground/followTorrent.js"
       ]
     }
   ],

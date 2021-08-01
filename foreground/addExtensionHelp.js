@@ -47,7 +47,7 @@ if (window.location.href.includes("/help")) {
                 Can go to the next available page if the above feature removed all the torrents from the browse section.
             </li>
             <li>
-                Adds a user blocking system. (only blocks their comments and its not affecting said user)
+                Adds a user blocking system. (only hides their comments)
             </li>
             <li>
                 Adds a reply feature (in the comments), this feature implements the following.
