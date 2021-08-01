@@ -74,7 +74,7 @@ if (window.location.href.includes("/help")) {
             </li>
         </ul>
         <br/>
-        If you don't want to request for a new feature, then go and create an issue on the <a href="https://github.com/ArjixWasTaken/Nyaa-Utility/issues">Nyaa-Utility issue tracker</a>
+        If you want to request for a new feature, then go and create an issue on the <a href="https://github.com/ArjixWasTaken/Nyaa-Utility/issues">Nyaa-Utility issue tracker</a>
     </div>
 
     <hr>
