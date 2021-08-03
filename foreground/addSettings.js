@@ -61,7 +61,7 @@ const injectConfig = () => {
     $('#submit_settings').after(resetBtn)
     $('input#reset').on('click', () => {
         if (confirm('Are you sure you want to reset all of the settings to the default?\nNote: This will also unblock all the blocked users.')) {
-            chrome.storage.sync.clear(() => {
+            chrome.storage.local.clear(() => {
                 window.location.reload()
             })
         }
@@ -69,7 +69,7 @@ const injectConfig = () => {
 
     {
         document.querySelectorAll('#blockedUsersNyaa > li').forEach((li) => {
-            li.onclick = () => {
+            li.onclick = async () => {
                 const link = li.querySelector('a').href
                 // https://nyaa.si/user/XXXXXXX
                 const user = link.match(/user\/(.*)/);
@@ -78,7 +78,7 @@ const injectConfig = () => {
                 }
                 const ops = nyaaUtility.storage.user.options
                 ops.nyaaBlockedUsers = ops.nyaaBlockedUsers.filter(usr => usr.match(/user\/(.*)/)[1] != user[1])
-                nyaaUtility.settings.save()
+                await nyaaUtility.settings.save()
                 window.location.reload()
             }
         });
