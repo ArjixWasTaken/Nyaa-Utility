@@ -58,7 +58,11 @@ const injectConfig = () => {
         .first()
         .before(deadTorrentRemovalRule)
         .after(AutoNextPage + NyaaUserBlocks + commentDateTime + blockedUsers);
-    $('#submit_settings').after(resetBtn)
+    $('#submit_settings').after(
+        resetBtn + `
+            <br/><h5>Need help? Go <a href="https://nyaa.si/nyaa-utility">here</a>.</h5>
+        `
+    )
     $('input#reset').on('click', () => {
         if (confirm('Are you sure you want to reset all of the settings to the default?\nNote: This will also unblock all the blocked users.')) {
             chrome.storage.local.clear(() => {
@@ -83,6 +87,8 @@ const injectConfig = () => {
             }
         });
     }
+
+    // https://nyaa.si/nyaa-utility
 
     document.getElementById("submit_settings").addEventListener(
         "click",
