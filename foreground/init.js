@@ -231,6 +231,14 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
             </a>
         </li>
     `);
+    $(`.dropdown-menu > li > a[href*="/login"]`).parent().before(`
+        <li>
+            <a href="/notifications">
+                <i class="fa fa-bell fa-fw"></i>
+                Notifications
+            </a>
+        </li>
+    `);
     try {
         document.querySelector(
             `.dropdown-menu > li > [href*="/profile"]`
@@ -238,7 +246,7 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
             .querySelector(`[href*="/profile"]`)
             .innerHTML.replace("Profile", "Settings");
     } catch {
-        $(`.dropdown-menu > li > a[href*="/login"]`).parent().before(`
+        $(`.dropdown-menu > li > a[href*="/notifications"]`).parent().before(`
         <li>
             <a href="/settings">
                 <i class="fa fa-gear fa-fw"></i>
