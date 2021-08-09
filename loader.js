@@ -15,7 +15,7 @@ const injectScript = async (file) => {
 const href = document.location.href;
 
 switch (true) {
-    case /\/help/.test(href): {
+    case /\/nyaa-utility/.test(href): {
         injectScript("./foreground/addExtensionHelp.js");
         break;
     }

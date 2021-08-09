@@ -247,6 +247,14 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
         </li>
     `);
     } // user is not logged in
+
+    $(`.dropdown-menu > li > a[href*="/rules"]`).parent().before(`
+        <li>
+            <a href="/nyaa-utility">
+                Nyaa-Utility
+            </a>
+        </li>
+    `);
 }
 
 nyaaUtility.storage.system.onload(() => {

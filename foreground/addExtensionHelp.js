@@ -1,4 +1,10 @@
 const container = document.querySelector("body > .container");
+
+container.removeChild(container.querySelector("h1"));
+container.removeChild(container.querySelector("p"));
+
+document.querySelector("title").innerText = "Nyaa-Utility :: Nyaa";
+
 container.innerHTML =
     `<h1>Nyaa-Utility v${chrome.runtime.getManifest().version}</h1>
 <h3 id="nyaa-getting-help">
@@ -74,6 +80,5 @@ container.innerHTML =
     <br/>
     If you want to request for a new feature, then go and create an issue on the <a href="https://github.com/ArjixWasTaken/Nyaa-Utility/issues">Nyaa-Utility issue tracker</a>
 </div>
-
-<hr>
+<hr/>
 ` + container.innerHTML;
