@@ -18,14 +18,12 @@ const categories = {
     "6_2": "Software - Games",
 };
 
-if (window.location.href.includes("/notifications")) {
-    const container = document.querySelector("body > div.container");
+const container = document.querySelector("body > div.container");
 
-    container.removeChild(container.querySelector("h1"));
-    container.removeChild(container.querySelector("p"));
+container.removeChild(container.querySelector("h1"));
+container.removeChild(container.querySelector("p"));
 
-    document.querySelector("title").innerText = "Notifications :: Nyaa";
-}
+document.querySelector("title").innerText = "Notifications :: Nyaa";
 
 nyaaUtility.storage.system.onload(async () => {
     if (window.location.href.includes("/notifications")) {

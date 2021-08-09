@@ -8,7 +8,6 @@ if (document.location.href.includes("/view/")) {
             .querySelector("#collapse-comments")
             .querySelectorAll("div.panel.panel-default.comment-panel");
         for (let i = 0; i < comments.length; i++) {
-            console.log(comments[i]);
             let comment = comments[i].querySelector(
                 "div[markdown-text].comment-content > p "
             );

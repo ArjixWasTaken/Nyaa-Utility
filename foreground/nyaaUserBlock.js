@@ -28,7 +28,7 @@ function blockUser(message) {
 
 //prettier-ignore
 nyaaUtility.storage.system.onload(() => {
-    if (document.location.href.includes("/view/") && !nyaaUtility.storage.user.options.NyaaUserBlocks) {
+    if (!nyaaUtility.storage.user.options.NyaaUserBlocks) {
         let comments = document.querySelectorAll("div.panel.panel-default.comment-panel")
 
         for (let i = 0; i < comments.length; i++) {
