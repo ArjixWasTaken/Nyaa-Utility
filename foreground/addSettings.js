@@ -88,8 +88,6 @@ const injectConfig = () => {
         });
     }
 
-    // https://nyaa.si/nyaa-utility
-
     document.getElementById("submit_settings").addEventListener(
         "click",
         () => {
