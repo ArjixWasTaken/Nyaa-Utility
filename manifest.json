@@ -5,13 +5,12 @@
     "https://nyaa.si/*",
     "https://sukebei.nyaa.si/*",
     "https://meowinjapanese.cf/*",
-    "https://sessions.bugsnag.com/*",
     "background",
     "unlimitedStorage",
     "storage",
     "notifications"
   ],
-  "version": "1.2",
+  "version": "1.5",
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "icons": {
