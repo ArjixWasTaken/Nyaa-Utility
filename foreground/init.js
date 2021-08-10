@@ -267,8 +267,6 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
 }
 
 nyaaUtility.storage.system.onload(() => {
-    if (nyaaUtility.storage.user.options.enableCrashAnalytics) {
-    }
     console.log(
         `%c${nyaaUtility.userName} - NyaaUtility Settings %c${JSON.stringify(
             nyaaUtility.storage.user,
