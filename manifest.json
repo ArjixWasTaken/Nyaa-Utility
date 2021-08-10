@@ -8,10 +8,9 @@
     "https://sukebei.nyaa.si/*",
     "https://meowinjapanese.cf/*",
     "background",
-    "unlimitedStorage",
-    "tabs"
+    "unlimitedStorage"
   ],
-  "version": "1.0",
+  "version": "1.1",
   "author": "Arjix",
   "description": "An extension that customizes nyaa.",
   "icons": {
