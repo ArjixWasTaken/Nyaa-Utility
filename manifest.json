@@ -2,13 +2,14 @@
   "manifest_version": 2,
   "name": "Nyaa Utility",
   "permissions": [
-    "storage",
-    "notifications",
     "https://nyaa.si/*",
     "https://sukebei.nyaa.si/*",
     "https://meowinjapanese.cf/*",
+    "https://sessions.bugsnag.com/*",
     "background",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "storage",
+    "notifications"
   ],
   "version": "1.2",
   "author": "Arjix",

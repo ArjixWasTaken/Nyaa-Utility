@@ -2,40 +2,40 @@
 setInterval(async () => {
     console.log('=========================\nChecking for new comments\n=========================')
     await chrome.storage.local.get("NyaaUtilSettings", async (result) => {
-        for ([key, value] of Object.entries(result.NyaaUtilSettings.options.subscribedThreads)) {
-            let data = await getData(key)
-            if (Object.keys(data).length == 0) {
+        for ([torrent, prevComments] of Object.entries(result.NyaaUtilSettings.options.subscribedThreads)) {
+            let dataComment = await getData(torrent)
+            if (Object.keys(dataComment).length == 0) {
                 await sleep(5000)
-                data = await getData(key)
-                if (Object.keys(data).length == 0) {
+                dataComment = await getData(torrent)
+                if (Object.keys(dataComment).length == 0) {
                     await sleep(5000)
                     continue
                 }
             }
 
-            if (value == data.comments) continue
-            else if (value > data.comments) {
-                data.count = value - data.comments
-                data.mode = "deletion"
+            if (prevComments == dataComment.comments) continue
+            else if (prevComments > dataComment.comments) {
+                dataComment.count = prevComments - dataComment.comments
+                dataComment.mode = "deletion"
             } else {
-                data.count = data.comments - value
-                data.mode = "addition"
+                dataComment.count = dataComment.comments - prevComments
+                dataComment.mode = "addition"
             }
-            data.type = "comment"
+            dataComment.type = "comment"
 
-            popNotification(data)
-            result.NyaaUtilSettings.options.subscribedThreads[key] = data.comments;
-            result.NyaaUtilSettings.options.notifications[key] = data
-            chrome.storage.local.set({
+            popNotification(dataComment)
+            result.NyaaUtilSettings.options.subscribedThreads[torrent] = dataComment.comments;
+            result.NyaaUtilSettings.options.notifications[torrent] = dataComment
+            await chrome.storage.local.set({
                 NyaaUtilSettings: result.NyaaUtilSettings,
             });
 
-            if (data.mode == "addition") {
-                console.log(`${data.count} new comment${data.count > 1? 's' : ''}!`)
+            if (dataComment.mode == "addition") {
+                console.log(`${dataComment.count} new comment${dataComment.count > 1? 's' : ''}!`)
             } else {
-                console.log(`${data.count} comment${data.count > 1? 's were deleted.' : ' was deleted'}.`)
+                console.log(`${dataComment.count} comment${dataComment.count > 1? 's were deleted.' : ' was deleted'}.`)
             }
         }
     });
     console.log('=========================\nFinished checking for new comments.\n=========================')
-}, 1000 * 60 * 30); // every 30 minutes
+}, 1000 * 60 * 15); // every 15 minutes

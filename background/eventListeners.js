@@ -56,7 +56,11 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 });
 
-
 chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.create({ url: "https://nyaa.si/nyaa-utility" }, () => {});
+});
+
+chrome.storage.local.get("NyaaUtilSettings", (result) => {
+    if (result.NyaaUtilSettings.options.enableCrashAnalytics) {
+    }
 });

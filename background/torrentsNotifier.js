@@ -2,13 +2,13 @@
 setInterval(async () => {
     console.log('=========================\nChecking for new items in the subscribed feeds.\n=========================')
     await chrome.storage.local.get("NyaaUtilSettings", async (result) => {
-        for ([key, value] of Object.entries(result.NyaaUtilSettings.options.FeedsTracker)) {
-            let data = await getData(key, true)
+        for ([link, torrentId] of Object.entries(result.NyaaUtilSettings.options.FeedsTracker)) {
+            let dataTorrents = await getData(link, true)
 
-            if (data.length == 0) {
+            if (dataTorrents.length == 0) {
                 await sleep(5000)
-                data = await getData(key, true)
-                if (data.length == 0) {
+                dataTorrents = await getData(link, true)
+                if (dataTorrents.length == 0) {
                     await sleep(5000)
                     continue
                 }
@@ -16,23 +16,24 @@ setInterval(async () => {
 
             const items = []
 
-            if (value === data[0].id) continue
+            if (torrentId === dataTorrents[0].id) continue
             else {
-                for (const item of data) {
-                    if (item.id == value) {
+                for (const item of dataTorrents) {
+                    if (item.id == torrentId) {
                         break
                     }
                     items.push(item)
                 }
             }
             if (items.length > 0) {
+                console.log(torrentId, items[0].id, items)
                 popNotification({
                     title: `${items.length} new torrent${items.length > 1 ? 's have' : ' has'} been detected.`,
-                    message: key.replace('+', ' ').trim()
+                    message: link.replace('+', ' ').trim()
                 })
-                result.NyaaUtilSettings.options.FeedsTracker[key] = items[0].id
+                result.NyaaUtilSettings.options.FeedsTracker[link] = items[0].id
                 result.NyaaUtilSettings.options.notifications[Date.now()] = items
-                chrome.storage.local.set({
+                await chrome.storage.local.set({
                     NyaaUtilSettings: result.NyaaUtilSettings,
                 });
             }

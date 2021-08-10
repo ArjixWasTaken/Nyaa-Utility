@@ -38,7 +38,7 @@ const nyaaUtility = {
             }
             return false
         },
-        getData : async (id, rss=false) => {
+        getData: async (id, rss=false) => {
             const link = `${rss ? id : "https://nyaa.si/view/" +  id}`;
         
             let req = await nyaaUtility.utils.fetchWithErrorCatching(link, {
@@ -67,12 +67,12 @@ const nyaaUtility = {
                 items = []
                 html.querySelectorAll("item").forEach(el => {
                     items.push({
-                        comments: el.getElementsByTagName("nyaa:comments")[0].innerHTML.trim(),
+                        comments: parseInt(el.getElementsByTagName("nyaa:comments")[0].innerHTML.trim()),
                         category: el.getElementsByTagName("nyaa:categoryId")[0].innerHTML.trim(),
                         title: el.querySelector("title").innerHTML.trim(),
                         size: el.getElementsByTagName("nyaa:size")[0].innerHTML.trim(),
                         timestamp: (new Date(el.querySelector("pubDate").innerHTML)).getTime(),
-                        id: el.querySelector("guid").innerHTML.match(/view\/(\d+)/)[1]
+                        id: parseInt(el.querySelector("guid").innerHTML.match(/view\/(\d+)/)[1])
                     })
                 })
                 return items
@@ -84,7 +84,7 @@ const nyaaUtility = {
                 title: html.querySelector("h3.panel-title").innerText.trim(),
                 size: html.querySelector("div.panel-body > div:nth-child(4) > div:nth-child(2)").innerText.trim(),
                 timestamp: html.querySelector('div.panel-body > div:nth-child(1) > div:nth-child(4)')['data-timestamp'],
-                id        
+                id
             }
         },
         snippets: {
@@ -162,6 +162,7 @@ const nyaaUtility = {
                 "FeedsTracker": {},
                 "subscribedFeeds": {},
                 "notifications": {},
+                "enableCrashAnalytics": false
             }
         },
         get: (keyName) => {
@@ -266,6 +267,8 @@ if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
 }
 
 nyaaUtility.storage.system.onload(() => {
+    if (nyaaUtility.storage.user.options.enableCrashAnalytics) {
+    }
     console.log(
         `%c${nyaaUtility.userName} - NyaaUtility Settings %c${JSON.stringify(
             nyaaUtility.storage.user,

@@ -25,7 +25,7 @@ const popNotification = (data) => {
     try {
         switch (data.mode) {
             case "addition": {
-                chrome.notifications.create(key, {
+                chrome.notifications.create({
                     type: "basic",
                     iconUrl: "assets/128.png",
                     title: data.title,
@@ -46,7 +46,7 @@ const popNotification = (data) => {
                     message && message.trim() != "" ? message : data.message;
                 message += ` - Feed`;
                 console.log(message);
-                chrome.notifications.create(key, {
+                chrome.notifications.create({
                     type: "basic",
                     iconUrl: "assets/128.png",
                     title: data.title,
@@ -123,7 +123,9 @@ const getData = async (id, rss = false) => {
                 timestamp: new Date(
                     el.querySelector("pubDate").innerHTML
                 ).getTime(),
-                id: el.querySelector("guid").innerHTML.match(/view\/(\d+)/)[1],
+                id: parseInt(
+                    el.querySelector("guid").innerHTML.match(/view\/(\d+)/)[1]
+                ),
             });
         });
         return items;
