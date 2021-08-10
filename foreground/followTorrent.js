@@ -41,6 +41,7 @@ nyaaUtility.storage.system.onload(() => {
                 alert(
                     "Failed to subscribe to this torrent.\nPlease try again later."
                 );
+                return;
             }
             const regex =
                 /<h3 class="panel-title">(?:\n|\s)*?Comments - (\d+)(?:\n|\s)*?<\/h3>/;

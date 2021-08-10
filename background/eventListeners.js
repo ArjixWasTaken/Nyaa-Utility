@@ -1,11 +1,4 @@
 chrome.notifications.onClicked.addListener(async (data) => {
-    // open torrent page
-    let tabsLength = 0;
-    await chrome.tabs.query({}, (tabs) => {
-        tabsLength = tabs.length;
-    });
-    if (tabsLength == 0) return;
-
     if (isNumeric(data)) {
         console.log("comment notif clicked: ", data);
         try {
@@ -13,7 +6,7 @@ chrome.notifications.onClicked.addListener(async (data) => {
                 url: "https://nyaa.si/view/" + data,
             });
             chrome.storage.local.get("NyaaUtilSettings", async (result) => {
-                delete result.NyaaUtilSettings.options.notifications[notifID];
+                delete result.NyaaUtilSettings.options.notifications[data];
                 chrome.storage.local.set({
                     NyaaUtilSettings: result.NyaaUtilSettings,
                 });
@@ -23,31 +16,30 @@ chrome.notifications.onClicked.addListener(async (data) => {
 });
 
 chrome.notifications.onClicked.addListener(async (data) => {
-    let tabsLength = 0;
-    await chrome.tabs.query({}, (tabs) => {
-        tabsLength = tabs.length;
-    });
-    if (tabsLength == 0) return;
-
     if (!isNumeric(data)) {
         console.log("feed notif clicked: ", data);
-        await chrome.storage.local.get("NyaaUtilSettings", async (result) => {
-            for ([key, value] of Object.entries(
-                result.NyaaUtilSettings.options.subscribedFeeds
-            )) {
-                if (value === data) {
-                    chrome.tabs.create({ url: key });
-                    break;
+        try {
+            await chrome.storage.local.get(
+                "NyaaUtilSettings",
+                async (result) => {
+                    for ([key, value] of Object.entries(
+                        result.NyaaUtilSettings.options.subscribedFeeds
+                    )) {
+                        if (value === data) {
+                            chrome.tabs.create({ url: key });
+                            break;
+                        }
+                    }
+                    delete result.NyaaUtilSettings.options.notifications[data];
+                    await chrome.storage.local.set({
+                        NyaaUtilSettings: result.NyaaUtilSettings,
+                    });
                 }
-            }
-            delete result.NyaaUtilSettings.options.notifications[data];
-            await chrome.storage.local.set({
-                NyaaUtilSettings: result.NyaaUtilSettings,
+            );
+            await chrome.tabs.create({
+                url: "https://nyaa.si/notifications",
             });
-        });
-        await chrome.tabs.create({
-            url: "https://nyaa.si/notifications",
-        });
+        } catch {}
     }
 });
 

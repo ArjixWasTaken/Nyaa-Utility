@@ -39,4 +39,4 @@ setInterval(async () => {
         }
     });
     console.log('=========================\nFinished checking for new items in the subscribed feeds\n=========================')
-}, 1000 * 60 * 3); // every 15 minutes
+}, 1000 * 60 * 15); // every 15 minutes

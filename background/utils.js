@@ -21,7 +21,7 @@ const sleep = (seconds) => {
     return new Promise((resolve) => setTimeout(resolve, 1000 * seconds));
 };
 
-const popNotification = async (data) => {
+const popNotification = (data) => {
     try {
         switch (data.mode) {
             case "addition": {
@@ -36,6 +36,9 @@ const popNotification = async (data) => {
                 });
                 return;
             }
+
+            case "deletion":
+                break;
 
             default: {
                 let message = parseQs(data.message.trim()).q;
@@ -109,9 +112,9 @@ const getData = async (id, rss = false) => {
         items = [];
         html.querySelectorAll("item").forEach((el) => {
             items.push({
-                comments: el
-                    .getElementsByTagName("nyaa:comments")[0]
-                    .innerHTML.trim(),
+                comments: parseInt(
+                    el.getElementsByTagName("nyaa:comments")[0].innerHTML.trim()
+                ),
                 category: el
                     .getElementsByTagName("nyaa:categoryId")[0]
                     .innerHTML.trim(),
@@ -127,8 +130,7 @@ const getData = async (id, rss = false) => {
     }
 
     return {
-        comments: html.querySelectorAll("div.panel.panel-default.comment-panel")
-            .length,
+        comments: parseInt(data.match(/Comments - (\d+)/)[1]),
         category: html
             .querySelector(`.panel-body > .row a[href*="/?c="]:nth-child(2)`)
             .href.match(/(\d_\d)/)[1],
