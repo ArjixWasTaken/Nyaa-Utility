@@ -44,6 +44,7 @@ switch (true) {
         injectScript("./foreground/nyaaUserBlock.js");
         injectScript("./foreground/mentionUser.js");
         injectScript("./foreground/followTorrent.js");
+        injectScript("./foreground/removeNotif.js");
         break;
     }
 
