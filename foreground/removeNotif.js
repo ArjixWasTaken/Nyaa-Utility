@@ -9,7 +9,6 @@
         if (Array.isArray(notif)) {
             for (const item of notif) {
                 if (currentId == item.id) {
-                    alert("removed notif");
                     ops.notifications[item.id] = ops.notifications[
                         item.id
                     ].filter((it) => item.id != it.id);
@@ -25,7 +24,6 @@
         }
 
         if (currentId == notif.id) {
-            alert("removed notif");
             delete nyaaUtility.storage.user.options.notifications[notif.id];
             nyaaUtility.settings.save();
             break loop1;
