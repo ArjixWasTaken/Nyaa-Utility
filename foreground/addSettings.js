@@ -1,5 +1,5 @@
 const injectConfig = () => {
-    themeUtil.onload(() => {
+    nyaaUtility.storage.system.onload(() => {
         const ops = nyaaUtility.storage.user.options;
 
         const AutoNextPage = nyaaUtility.utils.snippets.getCheckBox(
@@ -84,7 +84,7 @@ const injectConfig = () => {
                 )
             ) {
                 chrome.storage.local.clear(() => {
-                    localStorage.removeItem("theme_name");
+                    themeUtil.removeTheme();
                     window.location.reload();
                 });
             }
@@ -125,8 +125,7 @@ const injectConfig = () => {
                 nyaaUtility.storage.user.options.commentPostedAtTime =
                     document.querySelector("#NyaaCommentDate").checked;
 
-                localStorage.setItem(
-                    "theme_name",
+                themeUtil.setTheme(
                     document.querySelector("#themeDropDwnID").value
                 );
                 await nyaaUtility.settings.save();
@@ -138,7 +137,7 @@ const injectConfig = () => {
 };
 
 if (window.location.href.includes("/profile")) {
-    nyaaUtility.storage.system.onload(() => {
+    themeUtil.onload(() => {
         {
             /*
                 Changes the active tab to the preferences one
@@ -186,5 +185,5 @@ if (window.location.href.includes("/profile")) {
             <hr>
 		</div>
         `;
-    nyaaUtility.storage.system.onload(injectConfig);
+    themeUtil.onload(injectConfig);
 }

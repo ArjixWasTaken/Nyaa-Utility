@@ -10,7 +10,7 @@
         "storage",
         "notifications"
     ],
-    "version": "1.5",
+    "version": "1.6",
     "author": "Arjix",
     "description": "An extension that customizes nyaa.",
     "icons": {
@@ -18,7 +18,7 @@
         "48": "./assets/48.png",
         "128": "./assets/128.png"
     },
-    "web_accessible_resources": ["assets/*.json"],
+    "web_accessible_resources": ["assets/*"],
     "content_scripts": [
         {
             "matches": [

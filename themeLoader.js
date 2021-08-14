@@ -12,6 +12,15 @@ const themeUtil = {
             callback();
         }
     },
+    setTheme: (themeName) => {
+        localStorage.setItem("theme_name", themeName);
+    },
+    getTheme: () => {
+        return localStorage.getItem("theme_name");
+    },
+    removeTheme: () => {
+        localStorage.removeItem("theme_name");
+    },
 };
 
 const loadThemes = async () => {
@@ -38,16 +47,16 @@ const verifyTheme = (themeName) => {
 
 const themeLoaderMain = async () => {
     const theme_settings = {};
-    const default_theme = "Midnight Dusk";
+    const default_theme = "Nyaa Dark";
 
-    if (localStorage.getItem("theme_name") == null) {
-        localStorage.setItem("theme_name", default_theme);
+    if (themeUtil.getTheme() == null) {
+        themeUtil.setTheme(default_theme);
         theme_settings.selectedTheme = default_theme;
     } else {
-        if (verifyTheme(localStorage.getItem("theme_name"))) {
-            theme_settings.selectedTheme = localStorage.getItem("theme_name");
+        if (verifyTheme(themeUtil.getTheme())) {
+            theme_settings.selectedTheme = themeUtil.getTheme();
         } else {
-            localStorage.setItem("theme_name", default_theme);
+            themeUtil.setTheme(default_theme);
             theme_settings.selectedTheme = default_theme;
         }
     }

@@ -5,8 +5,9 @@ container.removeChild(container.querySelector("p"));
 
 document.querySelector("title").innerText = "Nyaa-Utility :: Nyaa";
 
-container.innerHTML =
-    `<h1>Nyaa-Utility v${chrome.runtime.getManifest().version}</h1>
+themeUtil.onload(() => {
+    container.innerHTML =
+        `<h1>Nyaa-Utility v${chrome.runtime.getManifest().version}</h1>
 <h3 id="nyaa-getting-help">
     Getting help
     <a class="header-anchor" href="#nyaa-getting-help">
@@ -38,6 +39,27 @@ container.innerHTML =
     <br/>
     So, this extension has the following features:
     <ul>
+        <li>
+            Themes Support! Themes available:
+            <ul>
+                ` +
+        themes
+            .map(
+                (e) =>
+                    `<li>${e.theme_name}</li>
+                    <img 
+                    width=1000
+                    height=700
+                    src=${chrome.runtime.getURL(
+                        "assets/themes/" +
+                            e.theme_name.replace(/ /g, "-").toLowerCase() +
+                            ".png"
+                    )}>`
+            )
+            .join("\n") +
+        `
+            </ul>
+        </li>
         <li>
             Filters out dead torrents from the browse section by one of the following rules.
             <ul>
@@ -81,4 +103,6 @@ container.innerHTML =
     If you want to request for a new feature, then go and create an issue on the <a href="https://github.com/ArjixWasTaken/Nyaa-Utility/issues">Nyaa-Utility issue tracker</a>
 </div>
 <hr/>
-` + container.innerHTML;
+` +
+        container.innerHTML;
+});

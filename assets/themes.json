@@ -1,5 +1,18 @@
 [
     {
+        "theme_name": "Nyaa Dark",
+        "base_theme": "DARK",
+        "primary": "#EF2475",
+        "primary_dark": "#BF1C5D",
+        "primary_light": "#F24F90",
+        "accent": "#8B8A8F",
+        "accent_dark": "#6F6E72",
+        "accent_light": "#A2A1A5",
+        "background": "#191919",
+        "background_dark": "#262626",
+        "background_light": "#323232"
+    },
+    {
         "theme_name": "Midnight Dusk",
         "base_theme": "DARK",
         "primary": "#EF2475",
@@ -11,71 +24,6 @@
         "background": "#16151D",
         "background_dark": "#0D0C11",
         "background_light": "#44434A"
-    },
-    {
-        "theme_name": "Material dark",
-        "base_theme": "DARK",
-        "primary": "#FF263238",
-        "primary_dark": "#FF202A2F",
-        "primary_light": "#FFC9D787",
-        "accent": "#FF009688",
-        "accent_dark": "#FF007F73",
-        "accent_light": "#FFFFC0A9",
-        "background": "#FF000000",
-        "background_dark": "#FF000000",
-        "background_light": "#FF262626"
-    },
-    {
-        "theme_name": "Instagram",
-        "base_theme": "DARK",
-        "primary": "#FF517FA4",
-        "primary_dark": "#FF446B8B",
-        "primary_light": "#FF6B92B1",
-        "accent": "#FF517FA4",
-        "accent_dark": "#FF446B8B",
-        "accent_light": "#FF6B92B1",
-        "background": "#FF161819",
-        "background_dark": "#FF121415",
-        "background_light": "#FF383A3B"
-    },
-    {
-        "theme_name": "Reddit",
-        "base_theme": "DARK",
-        "primary": "#FF000000",
-        "primary_dark": "#FF000000",
-        "primary_light": "#FF262626",
-        "accent": "#FFFF3D00",
-        "accent_dark": "#FFD83300",
-        "accent_light": "#FFFF5A26",
-        "background": "#FF212121",
-        "background_dark": "#FF1C1C1C",
-        "background_light": "#FF424242"
-    },
-    {
-        "theme_name": "Twitch",
-        "base_theme": "LIGHT",
-        "primary": "#FF7E57C2",
-        "primary_dark": "#FF6B49A4",
-        "primary_light": "#FF9170CB",
-        "accent": "#FF7E57C2",
-        "accent_dark": "#FF6B49A4",
-        "accent_light": "#FF9170CB",
-        "background": "#FFEFEEF1",
-        "background_dark": "#FFD7D1C5",
-        "background_light": "#FFF1F0F3"
-    },
-    {
-        "theme_name": "Facebook",
-        "base_theme": "LIGHT",
-        "primary": "#FF3B5998",
-        "primary_dark": "#FF324B81",
-        "primary_light": "#FF5871A7",
-        "accent": "#FF3B5998",
-        "accent_dark": "#FF324B81",
-        "accent_light": "#FF5871A7",
-        "background": "#FFF7F7F7",
-        "background_dark": "#FFD1D1D1",
-        "background_light": "#FFF8F8F8"
     },
     {
         "theme_name": "Quicknovel",
