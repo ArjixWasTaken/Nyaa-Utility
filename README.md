@@ -16,8 +16,8 @@ So, this extension has the following features:
 
 *   Themes Support! Themes available:
     *   Nyaa Dark (Default nyaa theme)     <img width="1000" height="700" src="./assets/themes/nyaa-dark.png">
-    *   Midnight Dusk <img width="1000" height="700" src="./assets/themes/midnight-dusk.png">
-    *   Quicknovel    <img width="1000" height="700" src="./assets/themes/quicknovel.png">
+    *   Midnight Dusk                      <img width="1000" height="700" src="./assets/themes/midnight-dusk.png">
+    *   Quicknovel                         <img width="1000" height="700" src="./assets/themes/quicknovel.png">
 *   Filters out dead torrents from the browse section by one of the following rules.
     *   Disabled
     *   0 Seeds
@@ -38,6 +38,4 @@ So, this extension has the following features:
     Clicking it will unfollow that feed.
 
   
-If you want to request for a new feature, then go and create an issue on the [Nyaa-Utility issue tracker](https://github.com/ArjixWasTaken/Nyaa-Utility/issues)
-
-* * *
+If you want to request for a new feature, then go and create an issue on the [issue tracker](https://github.com/ArjixWasTaken/Nyaa-Utility/issues)
