@@ -9,13 +9,8 @@
         if (Array.isArray(notif)) {
             for (const item of notif) {
                 if (currentId == item.id) {
-<<<<<<< HEAD
                     ops.notifications[notif.id] = ops.notifications[
                         notif.id
-=======
-                    ops.notifications[item.id] = ops.notifications[
-                        item.id
->>>>>>> 4831171c3a8619c62183131b0272fb8ad3bf73b5
                     ].filter((it) => item.id != it.id);
 
                     if (ops.notifications[id].length == 0)
