@@ -17,7 +17,7 @@ So, this extension has the following features:
 *   Themes Support! Themes available:
     *   Nyaa Dark (Default nyaa theme)     <img width="1000" height="700" src="./assets/themes/nyaa-dark.png">
     *   Midnight Dusk <img width="1000" height="700" src="./assets/themes/midnight-dusk.png">
-    *   Quicknovel    <img width="1000" height="700" src="./assets/themes/quicknovel.png"
+    *   Quicknovel    <img width="1000" height="700" src="./assets/themes/quicknovel.png">
 *   Filters out dead torrents from the browse section by one of the following rules.
     *   Disabled
     *   0 Seeds
