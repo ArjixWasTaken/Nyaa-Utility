@@ -137,24 +137,20 @@ const injectConfig = () => {
 };
 
 if (window.location.href.includes("/profile")) {
-    themeUtil.onload(() => {
-        {
-            /*
-                Changes the active tab to the preferences one
-                instead of the "change password" one.
-            */
-            classes = ["active", "in"];
-            for (let class_ of classes) {
-                $("#password-change").toggleClass(class_);
-                $("#preferences-change").toggleClass(class_);
-            }
+    /*
+        Changes the active tab to the preferences one
+        instead of the "change password" one.
+    */
+    classes = ["active", "in"];
+    for (let class_ of classes) {
+        $("#password-change").toggleClass(class_);
+        $("#preferences-change").toggleClass(class_);
+    }
 
-            $("#profileTabs > li:nth-child(1)").toggleClass("active");
-            $("#profileTabs > li:nth-child(3)").toggleClass("active");
-            $("#submit_settings").attr("value", "Save");
-            injectConfig();
-        }
-    });
+    $("#profileTabs > li:nth-child(1)").toggleClass("active");
+    $("#profileTabs > li:nth-child(3)").toggleClass("active");
+    $("#submit_settings").attr("value", "Save");
+    themeUtil.onload(injectConfig);
 } else if (window.location.href.includes("/settings")) {
     const container = document.querySelector("body > div.container");
 
