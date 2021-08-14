@@ -216,7 +216,12 @@ const nyaaUtility = {
 };
 
 // dont initialize if the page is rss
-if (!nyaaUtility.utils.stringIncludes(document.location.href, ["page=rss"])) {
+if (
+    !nyaaUtility.utils.stringIncludes(document.location.href, [
+        "page=rss",
+        "/static/",
+    ])
+) {
     nyaaUtility.userName = document
         .querySelector("i.fa-user")
         .parentNode.innerText.trim();

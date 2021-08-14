@@ -1,44 +1,46 @@
 {
-  "manifest_version": 2,
-  "name": "Nyaa Utility",
-  "permissions": [
-    "https://nyaa.si/*",
-    "https://sukebei.nyaa.si/*",
-    "https://meowinjapanese.cf/*",
-    "background",
-    "unlimitedStorage",
-    "storage",
-    "notifications"
-  ],
-  "version": "1.6",
-  "author": "Arjix",
-  "description": "An extension that customizes nyaa.",
-  "icons": {
-    "16": "./assets/16.png",
-    "48": "./assets/48.png",
-    "128": "./assets/128.png"
-  },
-  "content_scripts": [
-    {
-      "matches": [
+    "manifest_version": 2,
+    "name": "Nyaa Utility",
+    "permissions": [
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*",
-        "https://meowinjapanese.cf/*"
-      ],
-      "js": [
-        "./jquery-3.5.1.min.js",
-        "./foreground/init.js",
-        "./loader.js"
-      ]
+        "https://meowinjapanese.cf/*",
+        "background",
+        "unlimitedStorage",
+        "storage",
+        "notifications"
+    ],
+    "version": "1.5",
+    "author": "Arjix",
+    "description": "An extension that customizes nyaa.",
+    "icons": {
+        "16": "./assets/16.png",
+        "48": "./assets/48.png",
+        "128": "./assets/128.png"
+    },
+    "web_accessible_resources": ["assets/*.json"],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://nyaa.si/*",
+                "https://sukebei.nyaa.si/*",
+                "https://meowinjapanese.cf/*"
+            ],
+            "js": [
+                "./jquery-3.5.1.min.js",
+                "./themeLoader.js",
+                "./foreground/init.js",
+                "./loader.js"
+            ]
+        }
+    ],
+    "background": {
+        "scripts": [
+            "jquery-3.5.1.min.js",
+            "./background/utils.js",
+            "./background/eventListeners.js",
+            "./background/commentsNotifier.js",
+            "./background/torrentsNotifier.js"
+        ]
     }
-  ],
-  "background": {
-    "scripts": [
-      "jquery-3.5.1.min.js",
-      "./background/utils.js",
-      "./background/eventListeners.js",
-      "./background/commentsNotifier.js",
-      "./background/torrentsNotifier.js"
-    ]
-  }
 }

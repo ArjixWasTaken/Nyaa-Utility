@@ -28,6 +28,7 @@ switch (true) {
     case !nyaaUtility.utils.stringIncludes(href, [
         "/profile", "/view", "/rules", "/help",
         "/upload", "/notifications", "page=rss",
+        "/static/"
     ]): {
         injectScript("./foreground/newTorrentAnouncer.js");
         injectScript("./foreground/nyaaDeadTorrents.js")
