@@ -5,6 +5,7 @@
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*",
         "https://meowinjapanese.cf/*",
+        "https://sukebei.meowinjapanese.cf/*",
         "background",
         "unlimitedStorage",
         "storage",
@@ -24,7 +25,8 @@
             "matches": [
                 "https://nyaa.si/*",
                 "https://sukebei.nyaa.si/*",
-                "https://meowinjapanese.cf/*"
+                "https://meowinjapanese.cf/*",
+                "https://sukebei.meowinjapanese.cf/*"
             ],
             "js": [
                 "./jquery-3.5.1.min.js",
