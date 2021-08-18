@@ -50,7 +50,7 @@ nyaaUtility.storage.system.onload(() => {
             );
         }
 
-        nyaaUtility.settings.save();
+        await nyaaUtility.settings.save();
         window.location.reload();
     });
 });
