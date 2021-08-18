@@ -195,8 +195,8 @@ const nyaaUtility = {
         }
     },
     settings: {
-        load: () => {
-            chrome.storage.local.get("NyaaUtilSettings", function (value) {
+        load: async () => {
+            await chrome.storage.local.get("NyaaUtilSettings", function (value) {
                 if (JSON.stringify(value) == JSON.stringify({})) {
                     nyaaUtility.settings.save(() => {nyaaUtility.settings.load()})
                 } else {
@@ -205,8 +205,8 @@ const nyaaUtility = {
                 }
             });
         },
-        save: (callback=false) => {
-            chrome.storage.local.set({NyaaUtilSettings: nyaaUtility.storage.user}, () => {
+        save: async (callback=false) => {
+            await chrome.storage.local.set({NyaaUtilSettings: nyaaUtility.storage.user}, () => {
                 if (typeof callback == 'function') {
                     callback()
                 }
