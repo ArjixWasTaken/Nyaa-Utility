@@ -29,6 +29,7 @@ nyaaUtility.storage.system.onload(() => {
         "body > div > div:nth-child(1) > div.panel-footer.clearfix > button"
     ).after(btn);
     $("#" + identifier).on("click", async () => {
+        await nyaaUtility.settings.load()
         if (ops.subscribedThreads[torrentID] != undefined) {
             delete ops.subscribedThreads[torrentID];
         } else {
@@ -49,7 +50,6 @@ nyaaUtility.storage.system.onload(() => {
                 (await res.text()).match(regex)[1]
             );
         }
-
         await nyaaUtility.settings.save();
         window.location.reload();
     });
