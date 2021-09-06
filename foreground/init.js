@@ -133,6 +133,12 @@ const nyaaUtility = {
                         <option${selected}> ${item} </option>
                     `
                 }).join('\n') + `\n</select></p></div></div>`
+            },
+            getInputFieldWithSubmitButton: (placeholder, inputId, submitBtnId) => {
+                return `
+                    <input id="${inputId}" type="text" placeholder="${placeholder}">
+                    <button id="${submitBtnId}" type="button">Submit</button>
+                `
             }
         }
     },
@@ -157,6 +163,7 @@ const nyaaUtility = {
                 "NyaaUserBlocks": false,
                 "AutoNextPage": false,
                 "nyaaBlockedUsers": [],
+                "blockedTags": [],
                 "commentPostedAtTime": true,
                 "subscribedThreads": {},
                 "FeedsTracker": {},

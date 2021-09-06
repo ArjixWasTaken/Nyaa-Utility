@@ -42,6 +42,22 @@ const injectConfig = () => {
             "No blocked users were found."
         );
 
+        const blockTagInput =
+            nyaaUtility.utils.snippets.getInputFieldWithSubmitButton(
+                "Tag: eg HorribleSubs",
+                "blockedTagInput",
+                "submitBlockedTag"
+            );
+
+        const blockedTags = nyaaUtility.utils.snippets.getListBox(
+            "Blocked tags:",
+            "blockedTagsNyaa",
+            ops.blockedTags,
+            "blockedTag",
+            "remove",
+            "No blocked tags were found."
+        );
+
         const deadTorrentRemovalRule =
             nyaaUtility.utils.snippets.getDropdownList(
                 "DeadTorrent removeRule:",
@@ -69,8 +85,27 @@ const injectConfig = () => {
             .first()
             .before(deadTorrentRemovalRule + themesDropDwn)
             .after(
-                AutoNextPage + NyaaUserBlocks + commentDateTime + blockedUsers
+                AutoNextPage +
+                    NyaaUserBlocks +
+                    commentDateTime +
+                    blockedUsers +
+                    "<br/>" +
+                    blockTagInput +
+                    blockedTags
             );
+
+        $("#submitBlockedTag").on("click", async () => {
+            const value = document
+                .getElementById("blockedTagInput")
+                .value?.toLowerCase()
+                ?.trim();
+            if (!ops.blockedTags.includes(value)) {
+                ops.blockedTags.push(value);
+                await nyaaUtility.settings.save();
+                window.location.reload();
+            }
+        });
+
         $("#submit_settings").after(
             resetBtn +
                 `
@@ -109,6 +144,25 @@ const injectConfig = () => {
                         window.location.reload();
                     };
                 });
+        }
+
+        {
+            document.querySelectorAll("#blockedTagsNyaa > li").forEach((li) => {
+                li.onclick = async () => {
+                    const link = li.querySelector("a").href;
+                    // https://nyaa.si/XXXXXXX
+                    const tag = link.match(/\.si\/(.*)/);
+                    if (!tag) {
+                        return;
+                    }
+                    const ops = nyaaUtility.storage.user.options;
+                    ops.blockedTags = ops.blockedTags.filter(
+                        (ta) => ta != tag[1]
+                    );
+                    await nyaaUtility.settings.save();
+                    window.location.reload();
+                };
+            });
         }
 
         document.getElementById("submit_settings").addEventListener(

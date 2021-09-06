@@ -32,6 +32,7 @@ switch (true) {
     ]): {
         injectScript("./foreground/newTorrentAnouncer.js");
         injectScript("./foreground/nyaaDeadTorrents.js")
+        injectScript("./foreground/excludeTags.js")
         break;
     }
 
