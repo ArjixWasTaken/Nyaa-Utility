@@ -76,6 +76,9 @@ themeUtil.onload(() => {
             Adds a user blocking system. (only hides their comments)
         </li>
         <li>
+            Adds a tag blocking system. (removes torrents from the browse section based on their tags)
+        </li>
+        <li>
             Adds a reply feature (in the comments), this feature implements the following.
             <ul>
                 <li>A  <input class="btn btn-xs btn-danger" type="button" style="background-color: #646464; border: none;" value="Mention"></input> button next to usernames, when clicked it appends the @username of said user.</li>
