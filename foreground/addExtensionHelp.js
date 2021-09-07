@@ -46,7 +46,11 @@ themeUtil.onload(() => {
         themes
             .map(
                 (e) =>
-                    `<li>${e.theme_name}</li>
+                    `<li><button type="button" class="collapsible" onclick="((elem) => {
+                        elem.classList.toggle('active'); const content = this.nextElementSibling; if (content.style.display === 'block') { content.style.display = 'none' } else { content.style.display = 'block' }; if (content.style.maxHeight){ content.style.maxHeight = null; } else { content.style.maxHeight = content.scrollHeight + 'px';}})(this)">${
+                            e.theme_name
+                        }</button>
+                    <div class="content">
                     <img 
                     width=1000
                     height=700
@@ -54,7 +58,7 @@ themeUtil.onload(() => {
                         "assets/themes/" +
                             e.theme_name.replace(/ /g, "-").toLowerCase() +
                             ".png"
-                    )}>`
+                    )}></div></li>`
             )
             .join("\n") +
         `
