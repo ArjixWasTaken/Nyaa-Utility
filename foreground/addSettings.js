@@ -152,7 +152,7 @@ const injectConfig = () => {
                 li.onclick = async () => {
                     const link = li.querySelector("a").href;
                     // https://nyaa.si/?f=0&c=0_0&q=XXXXXXX
-                    const tag = link.match(/\q=(.*)/);
+                    const tag = link.match(/=0_0&q=(.*)/);
                     if (!tag) {
                         return;
                     }
