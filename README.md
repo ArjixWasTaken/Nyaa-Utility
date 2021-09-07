@@ -9,7 +9,7 @@ Welp, pretty much random stuff i code that enhance the nyaa website.
 
 
 
-Nyaa-Utility v1.6
+Nyaa-Utility v1.7
 =================
 
 So, this extension has the following features:
@@ -25,6 +25,7 @@ So, this extension has the following features:
     *   Both (0 seeds and leechers)
 *   Can go to the next available page if the above feature removed all the torrents from the browse section.
 *   Adds a user blocking system. (only hides their comments)
+*   Adds a tag blocking system. (removes torrents from the browse section based on their tags)
 *   Adds a reply feature (in the comments), this feature implements the following.
     *   A  button next to usernames, when clicked it appends the @username of said user.
     *   When a message contains your @username, that message becomes highlighted and the @username gets marked.
