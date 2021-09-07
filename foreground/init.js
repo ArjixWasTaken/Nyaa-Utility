@@ -102,12 +102,14 @@ const nyaaUtility = {
                                     </div>
                               </div>`
             },
-            getListBox: (title, identifier, listOfItems, itemClass, btnName, emptyListDefault) => {
+            getListBox: (title, identifier, listOfItems, itemClass, btnName, emptyListDefault, linkPath="") => {
                 let list = `<div class="row"><div class="form-group col-md-4"><div id="userList"><p>${title}</p><ul id="${identifier}" style="display:inline-block; border:1px solid #000; padding:20px; overflow-y:auto; height: 90px; list-style-type: none; padding: 0; margin: 0;">`
+
+                let link = window.location.origin
 
                 for (let i = 0; i < listOfItems.length; i++) {
                     let listItem = `<li style="margin-left: 10px; margin-right: 10px;"><div class="${itemClass}" id=${itemClass}><p class="${itemClass}" style="display: inline-block;">` +
-                        `<a target="_blank" href=${listOfItems[i]}>${listOfItems[i]}</a></p>` +
+                        `<a target="_blank" href="${link}${linkPath}${listOfItems[i]}">${listOfItems[i]}</a></p>` +
                         `<input class="btn btn-xs btn-danger pull-right" type="button" style="margin-left: 20px; background-color: #4CAF50; border: none; text-size: 70%;" value="${btnName}"` +
                         `></input>` +
                         `<br></div></li>`

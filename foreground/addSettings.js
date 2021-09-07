@@ -55,7 +55,8 @@ const injectConfig = () => {
             ops.blockedTags,
             "blockedTag",
             "remove",
-            "No blocked tags were found."
+            "No blocked tags were found.",
+            "/?f=0&c=0_0&q="
         );
 
         const deadTorrentRemovalRule =
@@ -150,8 +151,8 @@ const injectConfig = () => {
             document.querySelectorAll("#blockedTagsNyaa > li").forEach((li) => {
                 li.onclick = async () => {
                     const link = li.querySelector("a").href;
-                    // https://nyaa.si/XXXXXXX
-                    const tag = link.match(/\.si\/(.*)/);
+                    // https://nyaa.si/?f=0&c=0_0&q=XXXXXXX
+                    const tag = link.match(/\q=(.*)/);
                     if (!tag) {
                         return;
                     }
