@@ -112,4 +112,16 @@ themeUtil.onload(() => {
 <hr/>
 ` +
         container.innerHTML;
+    document.querySelector(`input[value="Reset"]`).onclick = () => {
+        if (
+            confirm(
+                "Are you sure you want to reset all of the settings to the default?\nNote: This will also unblock all the blocked users."
+            )
+        ) {
+            chrome.storage.local.clear(() => {
+                themeUtil.removeTheme();
+                window.location.reload();
+            });
+        }
+    };
 });
