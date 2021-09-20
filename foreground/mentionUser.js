@@ -11,7 +11,7 @@ nyaaUtility.storage.system.onload(() => {
             if (
                 comment
                     .querySelector("div.col-md-2 > p > a")
-                    .innerText.trim() != nyaaUtility.userName
+                    ?.innerText?.trim() != nyaaUtility.userName
             ) {
                 return comment;
             }
@@ -25,7 +25,7 @@ nyaaUtility.storage.system.onload(() => {
         $(user).after(mentionButton);
 
         comment.querySelector("input").onclick = () => {
-            textArea.value += "@" + user.innerText.trim() + " ";
+            textArea.value += "@" + user?.innerText.trim() + " ";
             window.scrollTo(0, document.body.scrollHeight);
         };
     });

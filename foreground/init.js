@@ -81,8 +81,8 @@ const nyaaUtility = {
             return {
                 comments: html.querySelectorAll("div.panel.panel-default.comment-panel").length,
                 category: html.querySelector(`.panel-body > .row a[href*="/?c="]:nth-child(2)`).href.match(/(\d_\d)/)[1],
-                title: html.querySelector("h3.panel-title").innerText.trim(),
-                size: html.querySelector("div.panel-body > div:nth-child(4) > div:nth-child(2)").innerText.trim(),
+                title: html.querySelector("h3.panel-title")?.innerText.trim(),
+                size: html.querySelector("div.panel-body > div:nth-child(4) > div:nth-child(2)")?.innerText.trim(),
                 timestamp: html.querySelector('div.panel-body > div:nth-child(1) > div:nth-child(4)')['data-timestamp'],
                 id
             }
@@ -130,7 +130,7 @@ const nyaaUtility = {
                         <p>${text}
                         <select id="${identifier}">
                 ` + listOfItems.map(item => {
-                    let selected = item == selectedItem? ' selected': '' 
+                    let selected = item == selectedItem? ' selected': ''
                     return `
                         <option${selected}> ${item} </option>
                     `
@@ -233,7 +233,7 @@ if (
 ) {
     nyaaUtility.userName = document
         .querySelector("i.fa-user")
-        .parentNode.innerText.trim();
+        .parentNode?.innerText.trim();
 
     nyaaUtility.settings.load(); // async fetch settings
 

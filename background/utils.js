@@ -136,12 +136,12 @@ const getData = async (id, rss = false) => {
         category: html
             .querySelector(`.panel-body > .row a[href*="/?c="]:nth-child(2)`)
             .href.match(/(\d_\d)/)[1],
-        title: html.querySelector("h3.panel-title").innerText.trim(),
+        title: html.querySelector("h3.panel-title")?.innerText.trim(),
         size: html
             .querySelector(
                 "div.panel-body > div:nth-child(4) > div:nth-child(2)"
             )
-            .innerText.trim(),
+            ?.innerText.trim(),
         timestamp: html.querySelector(
             "div.panel-body > div:nth-child(1) > div:nth-child(4)"
         ).dataset.timestamp,

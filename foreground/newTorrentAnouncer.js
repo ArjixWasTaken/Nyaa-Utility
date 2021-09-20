@@ -27,7 +27,7 @@ const onclick = async () => {
     }
 
     nyaaUtility.storage.user.options = ops;
-    nyaaUtility.settings.save();
+    await nyaaUtility.settings.save();
 };
 
 {

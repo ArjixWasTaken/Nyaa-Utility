@@ -12,7 +12,10 @@ nyaaUtility.storage.system.onload(() => {
     let text = "Subscribe";
     let colour = "background-color: #4CAF50;";
 
-    if (nyaaUtility.storage.user.options.subscribedThreads[torrentID] != undefined) {
+    if (
+        nyaaUtility.storage.user.options.subscribedThreads[torrentID] !=
+        undefined
+    ) {
         identifier = "unSubFromTorrent";
         text = "Unsubscribe";
         colour = "";
@@ -28,9 +31,14 @@ nyaaUtility.storage.system.onload(() => {
         "body > div > div:nth-child(1) > div.panel-footer.clearfix > button"
     ).after(btn);
     $("#" + identifier).on("click", async () => {
-        await nyaaUtility.settings.load()
-        if (nyaaUtility.storage.user.options.subscribedThreads[torrentID] != undefined) {
-            delete nyaaUtility.storage.user.options.subscribedThreads[torrentID];
+        await nyaaUtility.settings.load();
+        if (
+            nyaaUtility.storage.user.options.subscribedThreads[torrentID] !=
+            undefined
+        ) {
+            delete nyaaUtility.storage.user.options.subscribedThreads[
+                torrentID
+            ];
         } else {
             const res = await fetchWithErrorCatching(window.location.href, {
                 headers: {
@@ -45,9 +53,8 @@ nyaaUtility.storage.system.onload(() => {
             }
             const regex =
                 /<h3 class="panel-title">(?:\n|\s)*?Comments - (\d+)(?:\n|\s)*?<\/h3>/;
-            nyaaUtility.storage.user.options.subscribedThreads[torrentID] = parseInt(
-                (await res.text()).match(regex)[1]
-            );
+            nyaaUtility.storage.user.options.subscribedThreads[torrentID] =
+                parseInt((await res.text()).match(regex)[1]);
         }
         await nyaaUtility.settings.save();
         window.location.reload();

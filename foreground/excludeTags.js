@@ -22,7 +22,7 @@ nyaaUtility.storage.system.onload(() => {
         .forEach((torrent) => {
             let torrentTitle = torrent
                 .querySelector("td:nth-child(2)")
-                .innerText.split("\n");
+                ?.innerText.split("\n");
             if (torrentTitle.length == 2) torrentTitle = torrentTitle[1];
             else torrentTitle = torrentTitle[0];
 

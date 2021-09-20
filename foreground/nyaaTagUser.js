@@ -11,7 +11,7 @@ if (document.location.href.includes("/view/")) {
             let comment = comments[i].querySelector(
                 "div[markdown-text].comment-content > p "
             );
-            if (comment.innerText.includes(`@${nyaaUtility.userName}`)) {
+            if (comment?.innerText?.includes(`@${nyaaUtility.userName}`)) {
                 comments[i].style["border-color"] = "white";
                 comments[i].innerHTML = comments[i].innerHTML.replace(
                     `@${nyaaUtility.userName}`,

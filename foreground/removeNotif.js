@@ -1,8 +1,8 @@
-{
+(async function () {
     const notifications = Object.entries(
         nyaaUtility.storage.user.options.notifications
     );
-    const currentId = window.location.href.match(/view\/(\d+)/)[1];
+    const currentId = parseInt(window.location.href.match(/view\/(\d+)/)[1]);
     const ops = nyaaUtility.storage.user.options;
 
     loop1: for (let [id, notif] of notifications) {
@@ -16,7 +16,7 @@
                     if (ops.notifications[id].length == 0)
                         delete ops.notifications[id];
                     nyaaUtility.storage.user.options = ops;
-                    nyaaUtility.settings.save();
+                    await nyaaUtility.settings.save();
                     break loop1;
                 }
             }
@@ -25,8 +25,8 @@
 
         if (currentId == notif.id) {
             delete nyaaUtility.storage.user.options.notifications[notif.id];
-            nyaaUtility.settings.save();
+            await nyaaUtility.settings.save();
             break loop1;
         }
     }
-}
+})();

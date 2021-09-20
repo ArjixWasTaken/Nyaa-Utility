@@ -17,9 +17,9 @@ const main = () => {
     }
 
     for (let count = 0; count < torrents.length; count++) {
-        let seeds = torrents[count].querySelector("td:nth-child(6)").innerText;
+        let seeds = torrents[count].querySelector("td:nth-child(6)")?.innerText;
         let leachers =
-            torrents[count].querySelector("td:nth-child(7)").innerText;
+            torrents[count].querySelector("td:nth-child(7)")?.innerText;
 
         switch (removeRule) {
             case "both":
