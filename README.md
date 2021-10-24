@@ -9,7 +9,7 @@ Welp, pretty much random stuff i code that enhance the nyaa website.
 
 
 
-Nyaa-Utility v1.8
+Nyaa-Utility v1.9
 =================
 
 Changes on the new version!:
