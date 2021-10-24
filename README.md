@@ -13,7 +13,7 @@ Nyaa-Utility v1.8
 =================
 
 Changes on the new version!:
--   Fixed a bug with the notifications. (There is a high chance that you have to  all of your user data in order to fix this.)
+-   Fixed a bug with the notifications. (There is a high chance that you have to reset all of your user data in order to fix this.)
 
 
 So, this extension has the following features:
