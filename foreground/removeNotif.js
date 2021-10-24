@@ -8,7 +8,7 @@
     loop1: for (let [id, notif] of notifications) {
         if (Array.isArray(notif)) {
             for (const item of notif) {
-                if (currentId == item.id) {
+                if (currentId == item.id && Object(ops.notifications).hasOwnProperty(notif.id)) {
                     ops.notifications[notif.id] = ops.notifications[
                         notif.id
                     ].filter((it) => item.id != it.id);

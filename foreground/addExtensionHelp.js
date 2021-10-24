@@ -8,6 +8,12 @@ document.querySelector("title").innerText = "Nyaa-Utility :: Nyaa";
 themeUtil.onload(() => {
     container.innerHTML =
         `<h1>Nyaa-Utility v${chrome.runtime.getManifest().version}</h1>
+<div>
+    Changes on the new version!:
+    <ul>
+        <li>Fixed a bug with the notifications. (There is a high chance that you have to <input class="btn btn-xs btn-danger" type="button" value="Reset"> all of your user data in order to fix this.)</li>
+    </ul>
+</div>
 <h3 id="nyaa-getting-help">
     Getting help
     <a class="header-anchor" href="#nyaa-getting-help">
@@ -112,7 +118,7 @@ themeUtil.onload(() => {
 <hr/>
 ` +
         container.innerHTML;
-    document.querySelector(`input[value="Reset"]`).onclick = () => {
+    Array.from(document.querySelectorAll(`input[value="Reset"]`)).forEach((elem) => elem.onclick = () => {
         if (
             confirm(
                 "Are you sure you want to reset all of the settings to the default?\nNote: This will also unblock all the blocked users."
@@ -123,5 +129,5 @@ themeUtil.onload(() => {
                 window.location.reload();
             });
         }
-    };
+    })
 });
