@@ -9,8 +9,12 @@ Welp, pretty much random stuff i code that enhance the nyaa website.
 
 
 
-Nyaa-Utility v1.7
+Nyaa-Utility v1.8
 =================
+
+Changes on the new version!:
+-   Fixed a bug with the notifications. (There is a high chance that you have to  all of your user data in order to fix this.)
+
 
 So, this extension has the following features:
 
