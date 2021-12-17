@@ -1,0 +1,29 @@
+import { Module } from "./index"
+import { username } from "../Storage/api"
+
+class UserTagsInComments extends Module {
+    id = "userTagsInComments"
+    shouldRun: RegExp = /\/view\/\d+/
+    injectWithConfig = true;  // we need to know the tag of the user first.
+    //prettier-ignore
+    inject() {
+        let comments = Array.from(
+            (document.querySelector("#collapse-comments") as HTMLElement)?.querySelectorAll("div.panel.panel-default.comment-panel")
+        ).filter((comment) => comment != undefined && (comment.querySelector("div.col-md-2 > p > a") as HTMLElement)?.innerText?.trim() != username) as Array<HTMLElement>;
+
+        for (let i = 0; i < comments.length; i++) {
+            let comment = comments[i].querySelector(
+                "div[markdown-text].comment-content > p "
+            ) as HTMLElement;
+            if (comment?.innerText?.includes(`@ArjixGamer`)) {
+                comments[i].style.borderColor = "white";
+                comments[i].innerHTML = comments[i].innerHTML.replace(
+                    `@${username}`,
+                    `<mark>@${username}</mark>`
+                );
+            }
+        }
+    }
+}
+
+export default UserTagsInComments
