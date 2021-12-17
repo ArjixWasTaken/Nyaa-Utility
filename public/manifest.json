@@ -1,0 +1,44 @@
+{
+    "manifest_version": 2,
+
+    "name": "Nyaan",
+    "description": "An extension that customizes nyaa.",
+    "version": "1.0",
+    "author": "Arjix",
+
+    "options_ui": {
+        "page": "options.html"
+    },
+
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://nyaa.si/*",
+                "https://sukebei.nyaa.si/*",
+                "https://meowinjapanese.cf/*",
+                "https://sukebei.meowinjapanese.cf/*"
+            ],
+            "js": ["js/vendor.js", "js/content_script.js"]
+        }
+    ],
+
+    "background": {
+        "service_worker": "js/background.js"
+    },
+
+    "permissions": [
+        "https://nyaa.si/*",
+        "https://sukebei.nyaa.si/*",
+        "https://meowinjapanese.cf/*",
+        "https://sukebei.meowinjapanese.cf/*",
+        "background",
+        "unlimitedStorage",
+        "storage",
+        "notifications"
+    ]
+}
