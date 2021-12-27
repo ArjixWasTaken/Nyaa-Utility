@@ -4,7 +4,7 @@ import { Module } from "./index";
 
 class DeadTorrentRemover implements Module {
   id = "deadTorrentRemover";
-  shouldRun: RegExp = /((p|q)=)|(user\/)|(.si\/?)$/;
+  shouldRun: RegExp = /((p|q)=)|(user\/)|(\.si\/?)$/;
   injectWithConfig = true;
   options = (config: Config) => {
     const updateMinimums = async (
@@ -29,20 +29,21 @@ class DeadTorrentRemover implements Module {
       window.location.reload();
     };
 
+
+    const style = {
+        margin: "10px",
+        width: "30px",
+        cursor: "pointer"
+    }
+
     return (
       <>
-        <style>
-          {`input {
-                        margin: 10px;
-                        width: 30px;
-                        cursor: pointer;
-                    }`}
-        </style>
         Dead torrent remover enabled:
         <input
           type="checkbox"
           checked={config.settings.removeTorrentsEnabled}
           onChange={(e) => setEnabled(e.target.checked)}
+          style={style}
         />
         <br />
         Minimum seeders:
