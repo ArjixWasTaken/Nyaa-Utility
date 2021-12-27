@@ -1,6 +1,3 @@
-// temporary constants until I actually implement this.
-// TODO: Implement this.
-
 interface settings {
     blockedUsers: string[]
     removeTorrentsEnabled: boolean

@@ -17,21 +17,17 @@ const Options = () => {
         })
     }, []);
 
-    const saveOptions = () => {
-        document.write(options[0].toString())
-    };
-
     return (
         <>
-            <div>
-                {options.map(option => (
-                    <div>{option}</div>
-                ))}
-            </div>
-            <button onClick={saveOptions}>Save</button>
+            {options.map(option => (
+                <div>{option}</div>
+            ))}
+
         </>
     );
 };
+
+export { Options };
 
 ReactDOM.render(
     <React.StrictMode>
