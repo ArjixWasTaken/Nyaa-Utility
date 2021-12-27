@@ -1,5 +1,9 @@
 declare interface settings {
-    blockedUsers: string[]
+        blockedUsers: string[]
+        removeTorrentsEnabled: boolean
+        minimumSeeders: number
+        minimumLeechers: number
+        torrentRemoveCondition: string
 }
 
 declare class Config {

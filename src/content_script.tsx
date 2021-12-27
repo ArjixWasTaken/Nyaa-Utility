@@ -3,13 +3,14 @@ import { Module } from "./Modules/index"
 import CommentReplyBtn from "./Modules/commentReply"
 import UserTagsInComments from "./Modules/userTagsInComments"
 import BlockUser from "./Modules/blockUser"
+import DeadTorrentRemover from "./Modules/removeDeadTorrent"
 import { config } from "./Storage/api"
-
 
 const allModules: Module[] = [
     new CommentReplyBtn(),
     new UserTagsInComments(),
-    new BlockUser()
+    new BlockUser(),
+    new DeadTorrentRemover()
 ]
 
 export { allModules }

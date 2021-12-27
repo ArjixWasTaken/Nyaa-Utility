@@ -3,14 +3,15 @@
 
 interface settings {
     blockedUsers: string[]
+    removeTorrentsEnabled: boolean
+    minimumSeeders: number
+    minimumLeechers: number
+    torrentRemoveCondition: string
 }
-
-
 
 class Config {
     username: string
     settings = {} as settings
-
     initialized: Boolean = false
 
     onload(callback: Function): void {
