@@ -4,7 +4,7 @@ import { Module } from "./index";
 
 class DeadTorrentRemover implements Module {
   id = "deadTorrentRemover";
-  shouldRun: RegExp = /(\/(\?p=\d+)?|(user\/.+)|(&q=.+))$/;
+  shouldRun: RegExp = /((p|q)=)|(user\/)|(.si\/?)$/;
   injectWithConfig = true;
   options = (config: Config) => {
     const updateMinimums = async (
