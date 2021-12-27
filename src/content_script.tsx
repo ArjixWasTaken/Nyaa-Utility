@@ -11,6 +11,9 @@ const allModules: Module[] = [
     new UserTagsInComments(),
     new BlockUser()
 ]
+
+export { allModules }
+
 // for now all modules are enabled
 // TODO: Make this customizable
 const enabledModules: String[] = allModules.map(mod => mod.id)

@@ -7,6 +7,7 @@ class CommentReplyBtn implements Module {
     id = "commentReplyBtn"
     shouldRun: RegExp = /\/view\/\d+/
     injectWithConfig = true;
+    options = () => {}
     //prettier-ignore
     async inject(config?: Config) {
         if (config == undefined) return

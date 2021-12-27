@@ -27,16 +27,11 @@
         }
     ],
 
-    "background": {
-        "service_worker": "js/background.js"
-    },
-
     "permissions": [
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*",
         "https://meowinjapanese.cf/*",
         "https://sukebei.meowinjapanese.cf/*",
-        "background",
         "unlimitedStorage",
         "storage",
         "notifications"

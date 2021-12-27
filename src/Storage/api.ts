@@ -1,11 +1,18 @@
 // temporary constants until I actually implement this.
 // TODO: Implement this.
 
+interface settings {
+    blockedUsers: string[]
+}
+
+
 
 class Config {
     username: string
-    blockedUsers: Array<string>
+    settings = {} as settings
+
     initialized: Boolean = false
+
     onload(callback: Function): void {
         if (!this.initialized) {
             setTimeout(() => {
@@ -17,10 +24,26 @@ class Config {
     }
 
 
+    async saveConfig() {
+        chrome.storage.local.set({ NyaaUtilitiesRewrite: this.settings})
+    }
+
     constructor() {
         this.username = "ArjixGamer"
-        this.blockedUsers = []
-        this.initialized = true
+
+
+        chrome.storage.local.get("NyaaUtilitiesRewrite", async (value) => {
+            if (JSON.stringify(value) == JSON.stringify({})) {
+                // no config, set the defaults
+                this.settings.blockedUsers = []
+                console.log(this.settings)
+                await this.saveConfig()
+            } else {
+                this.settings = value.NyaaUtilitiesRewrite as settings
+            }
+
+            this.initialized = true
+        })
     }
 }
 
