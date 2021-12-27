@@ -14,24 +14,23 @@ class BlockUser implements Module {
             window.location.reload();
         }
 
+        const style = {
+            marginLeft: "20px",
+            backgroundColor: "#4caf50",
+            border: "none",
+            fontSize: "70%",
+            cursor: "pointer"
+        }
+
 
         return (<>
-                <style>
-                    {`input {
-                        margin-left: 20px;
-                        background-color: #4caf50;
-                        border: none;
-                        font-size: 70%;
-                        cursor: pointer;
-                    }`}
-                </style>
                 Blocked users:
                 <ul>
                     {config.settings.blockedUsers.map(user => {
-                        return (<li>
+                        return (<li key={user}>
                             <div>
                                 <a href={`${user}`}>{user.match(/user\/(.*)/)![1]}</a>
-                                <input type="button" value="unblock" onClick={() => unblock(user)}/>
+                                <input style={style} type="button" value="unblock" onClick={() => unblock(user)}/>
                             </div>
                         </li>)
                     })}
