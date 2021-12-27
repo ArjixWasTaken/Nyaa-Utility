@@ -27,6 +27,8 @@ const Options = () => {
     );
 };
 
+export { Options };
+
 ReactDOM.render(
     <React.StrictMode>
         <Options />
