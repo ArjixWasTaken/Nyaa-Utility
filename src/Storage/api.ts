@@ -1,4 +1,5 @@
 import deepmerge from "deepmerge";
+import _ from "lodash";
 
 interface torrent {
     id: number
@@ -33,7 +34,7 @@ interface settings {
 }
 
 
-const defaults = <settings> {
+const defaults = JSON.stringify(<settings> {
     blockedUsers: [],
     deadTorrentsRemover: {
         removeTorrentsEnabled: false,
@@ -42,14 +43,14 @@ const defaults = <settings> {
         torrentRemoveCondition: "both"
     },
     newCommentsNotifier: Array<torrent>(),
-}
+})
 
 
 
 
 class Config {
     username: string
-    settings = JSON.parse(JSON.stringify(defaults)) as settings
+    settings = JSON.parse(defaults) as settings
     initialized: Boolean = false
 
     onload(callback: Function): void {
@@ -69,11 +70,11 @@ class Config {
 
     async loadConfig() {
         chrome.storage.local.get("NyaaUtilitiesRewrite", async (value) => {
-            if (JSON.stringify(value) == JSON.stringify({})) {
+            if (_.isEmpty(value)) {
                 // no config, set the defaults
                 await this.saveConfig()
             } else {
-                this.settings = deepmerge(JSON.parse(JSON.stringify(defaults)), value.NyaaUtilitiesRewrite) as settings
+                this.settings = deepmerge(JSON.parse(defaults), value.NyaaUtilitiesRewrite) as settings
                 this.settings.newCommentsNotifier = filterOutDuplicates(this.settings.newCommentsNotifier)
             }
             console.log("Nyaa-Util[Rewrite]:Config", this.settings)
