@@ -11,20 +11,20 @@ class DeadTorrentRemover implements Module {
       countSeeders: number,
       countLeechers: number
     ) => {
-      config.settings.minimumSeeders = countSeeders;
-      config.settings.minimumLeechers = countLeechers;
+      config.settings.deadTorrentsRemover.minimumSeeders = countSeeders;
+      config.settings.deadTorrentsRemover.minimumLeechers = countLeechers;
       await config.saveConfig();
       window.location.reload();
     };
 
     const setEnabled = async (enabled: boolean) => {
-      config.settings.removeTorrentsEnabled = enabled;
+      config.settings.deadTorrentsRemover.removeTorrentsEnabled = enabled;
       await config.saveConfig();
       window.location.reload();
     };
 
     const setTorrentRemoveCondition = async (condition: string) => {
-      config.settings.torrentRemoveCondition = condition;
+      config.settings.deadTorrentsRemover.torrentRemoveCondition = condition;
       await config.saveConfig();
       window.location.reload();
     };
@@ -41,7 +41,7 @@ class DeadTorrentRemover implements Module {
         Dead torrent remover enabled:
         <input
           type="checkbox"
-          checked={config.settings.removeTorrentsEnabled}
+          checked={config.settings.deadTorrentsRemover.removeTorrentsEnabled}
           onChange={(e) => setEnabled(e.target.checked)}
           style={style}
         />
@@ -50,11 +50,11 @@ class DeadTorrentRemover implements Module {
         <input
           type="number"
           min="0"
-          value={config.settings.minimumSeeders}
+          value={config.settings.deadTorrentsRemover.minimumSeeders}
           onChange={(e) =>
             updateMinimums(
               Number(e.target.value),
-              config.settings.minimumLeechers
+              config.settings.deadTorrentsRemover.minimumLeechers
             )
           }
         />
@@ -62,17 +62,17 @@ class DeadTorrentRemover implements Module {
         <input
           type="number"
           min="0"
-          value={config.settings.minimumLeechers}
+          value={config.settings.deadTorrentsRemover.minimumLeechers}
           onChange={(e) =>
             updateMinimums(
-              config.settings.minimumSeeders,
+              config.settings.deadTorrentsRemover.minimumSeeders,
               Number(e.target.value)
             )
           }
         />
         <br />
         <select
-          value={config.settings.torrentRemoveCondition}
+          value={config.settings.deadTorrentsRemover.torrentRemoveCondition}
           onChange={(e) => setTorrentRemoveCondition(e.target.value)}
         >
           <option value="seeders">Seeders</option>
@@ -84,7 +84,7 @@ class DeadTorrentRemover implements Module {
     );
   };
   async inject(config?: Config) {
-    if (config == undefined || !config.settings.removeTorrentsEnabled) return;
+    if (config == undefined || !config.settings.deadTorrentsRemover.removeTorrentsEnabled) return;
 
     let torrents = Array.from(
       document.querySelectorAll(
@@ -101,12 +101,12 @@ class DeadTorrentRemover implements Module {
       );
 
       if (
-        (config.settings.torrentRemoveCondition == "seeders" &&
-          seeders < config.settings.minimumSeeders) ||
-        (config.settings.torrentRemoveCondition == "leechers" &&
-          leechers < config.settings.minimumLeechers) ||
-        seeders < config.settings.minimumSeeders ||
-        leechers < config.settings.minimumLeechers
+        (config.settings.deadTorrentsRemover.torrentRemoveCondition == "seeders" &&
+          seeders < config.settings.deadTorrentsRemover.minimumSeeders) ||
+        (config.settings.deadTorrentsRemover.torrentRemoveCondition == "leechers" &&
+          leechers < config.settings.deadTorrentsRemover.minimumLeechers) ||
+        seeders < config.settings.deadTorrentsRemover.minimumSeeders ||
+        leechers < config.settings.deadTorrentsRemover.minimumLeechers
       ) {
         torrent.remove();
       }

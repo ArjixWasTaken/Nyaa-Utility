@@ -27,6 +27,10 @@
         }
     ],
 
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+
     "permissions": [
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*",
@@ -34,6 +38,7 @@
         "https://sukebei.meowinjapanese.cf/*",
         "unlimitedStorage",
         "storage",
-        "notifications"
+        "notifications",
+        "background"
     ]
 }

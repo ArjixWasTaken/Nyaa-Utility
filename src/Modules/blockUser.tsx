@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Config } from "../Storage/api";
 import { Module } from "./index"
 import $ from "jquery";
@@ -47,17 +47,17 @@ class BlockUser implements Module {
                 config.settings.blockedUsers.push(userLink)
                 config.saveConfig()
 
-                let comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel"))
+                let comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>
                 for (let i = 0; i < comments.length; i++) {
                     let user = ((comments[i] as HTMLElement).querySelector("a") as HTMLAnchorElement).href
                     if (config.settings.blockedUsers.includes(user)) {
-                        (comments[i] as HTMLElement).remove()
+                        (comments[i] as HTMLElement).style.display = "none"
                     }
                 }
 
                 const commentsTitle = document.querySelector("div.panel-heading > a > h3") as HTMLElement
-                comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel"))
-                let title = commentsTitle.innerText.split("- ")[0] + "- " + comments.length
+                comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>
+                let title = commentsTitle.innerText.split("- ")[0] + "- " + (comments.length - comments.filter(c => c.style.display == "none").length)
                 commentsTitle.innerText = title
             }
         } else {
@@ -65,18 +65,28 @@ class BlockUser implements Module {
         }
     }
     async inject(config?: Config) {
-        console.log(config!.settings.blockedUsers)
-
         if (config == undefined) return
-        let comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>
 
+        setInterval(() => {
+            // Live restore/remove comments based on the config.
+            const commentsA = (Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>)
 
-        for (const comment of comments) {
-            const user = comment.querySelector("a")!.href
-            if (config.settings.blockedUsers.includes(user)) {
-                comment.remove()
+            for (const bComment of comments) {
+                const bUser = (bComment.querySelector("a") as HTMLAnchorElement).href
+                if (!config.settings.blockedUsers.includes(bUser)) {
+                    bComment.style.display = ""
+                } else {
+                    bComment.style.display = "none"
+                }
             }
-        }
+
+            const commentsTitle = document.querySelector("div.panel-heading > a > h3") as HTMLElement
+            const commentsB = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>
+            let title = commentsTitle.innerText.split("- ")[0] + "- " + (commentsB.length - commentsB.filter(c => c.style.display == "none").length)
+            commentsTitle.innerText = title
+        }, 400)
+
+        let comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")) as Array<HTMLElement>
 
         const commentsTitle = document.querySelector("div.panel-heading > a > h3") as HTMLElement
         comments = Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel"))

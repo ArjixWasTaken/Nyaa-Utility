@@ -1,9 +1,17 @@
+declare interface torrent {
+    id: number
+    commentsCount: number
+}
+
 declare interface settings {
         blockedUsers: string[]
-        removeTorrentsEnabled: boolean
-        minimumSeeders: number
-        minimumLeechers: number
-        torrentRemoveCondition: string
+        deadTorrentsRemover: {
+            removeTorrentsEnabled: boolean
+            minimumSeeders: number
+            minimumLeechers: number
+            torrentRemoveCondition: string
+        }
+        newCommentsNotifier: Array<torrent>
 }
 
 declare class Config {

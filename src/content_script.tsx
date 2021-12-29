@@ -4,13 +4,15 @@ import CommentReplyBtn from "./Modules/commentReply"
 import UserTagsInComments from "./Modules/userTagsInComments"
 import BlockUser from "./Modules/blockUser"
 import DeadTorrentRemover from "./Modules/removeDeadTorrent"
+import bgNewCommentsNotifier from "./Modules/bgNewCommentsNotifier"
 import { config } from "./Storage/api"
 
 const allModules: Module[] = [
     new CommentReplyBtn(),
     new UserTagsInComments(),
     new BlockUser(),
-    new DeadTorrentRemover()
+    new DeadTorrentRemover(),
+    new bgNewCommentsNotifier()
 ]
 
 export { allModules }
@@ -19,7 +21,7 @@ export { allModules }
 // TODO: Make this customizable
 const enabledModules: String[] = allModules.map(mod => mod.id)
 
-
+setInterval(() => { config.loadConfig() }, 400)
 //  Module loader
 allModules.forEach(module => {
     try {

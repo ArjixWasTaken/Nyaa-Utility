@@ -14,7 +14,7 @@ const Options = () => {
 
     useEffect(() => {
         config.onload(() => {
-            let ops = allModules.map(m => m.options(config)).filter(o => o != undefined) as Array<JSX.Element>
+            let ops = allModules.map(m => m.options ? m.options(config) : undefined).filter(o => o != undefined) as Array<JSX.Element>
             setOptions(ops)
         })
     }, []);

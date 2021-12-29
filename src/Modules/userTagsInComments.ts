@@ -6,7 +6,7 @@ class UserTagsInComments implements Module {
     id = "userTagsInComments"
     shouldRun: RegExp = /\/view\/\d+/
     injectWithConfig = true;  // we need to know the tag of the user first.
-    options = () => {}
+
     //prettier-ignore
     async inject(config?: Config) {
         if (config == undefined) return
