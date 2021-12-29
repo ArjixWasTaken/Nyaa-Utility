@@ -76,6 +76,14 @@ class Config {
                 this.settings = deepmerge(JSON.parse(JSON.stringify(defaults)), value.NyaaUtilitiesRewrite) as settings
                 this.settings.newCommentsNotifier = filterOutDuplicates(this.settings.newCommentsNotifier)
             }
+            console.log("Nyaa-Util[Rewrite]:Config", this.settings)
+        })
+    }
+
+    async liveSync() {
+        // Keep the copy of the config up to date.
+        chrome.storage.onChanged.addListener((changes: object, areaName: string) => {
+            this.loadConfig()
         })
     }
 

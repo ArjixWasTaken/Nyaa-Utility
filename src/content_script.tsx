@@ -21,7 +21,7 @@ export { allModules }
 // TODO: Make this customizable
 const enabledModules: String[] = allModules.map(mod => mod.id)
 
-setInterval(() => { config.loadConfig() }, 400)
+config.liveSync()
 //  Module loader
 allModules.forEach(module => {
     try {

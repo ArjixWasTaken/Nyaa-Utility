@@ -2,6 +2,9 @@ import { config } from "./Storage/api"
 import { allModules } from "./content_script"
 
 
+config.liveSync()
+
+
 const log = (...shit: any[]) => console.log("NyaaUtil::Background: INFO: ", ...shit)
 const warning = (...shit: any[]) => console.log("NyaaUtil::Background: WARNING: ", ...shit)
 const error = (...shit: any[]) => console.log("NyaaUtil::Background: ERROR:", ...shit)
@@ -36,13 +39,9 @@ const Clock = {
 }
 
 
-
-
-
-log(`Nyaa-Utility Background Worker`, config)
+log("Started")
 
 setInterval(async () => {
     // Main loop
-    await config.loadConfig()
     Clock.tick()
 }, 1000)
