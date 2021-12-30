@@ -1,13 +1,9 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: build
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    paths:
+      - "public/manifest.json"
 
 jobs:
   build:
@@ -27,13 +23,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - uses: borales/actions-yarn@v2.3.0
-        with:
+      with:
           cmd: install # will run `yarn install` command
 
     - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build # will run `yarn build` command
-
-    - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: test # will run `yarn test` command
+      with:
+        cmd: build # will run `yarn build` command
