@@ -19,7 +19,7 @@ class UserTagsInComments implements Module {
             let comment = comments[i].querySelector(
                 "div[markdown-text].comment-content > p "
             ) as HTMLElement;
-            if (comment?.innerText?.includes(`@ArjixGamer`)) {
+            if (comment?.innerText?.includes(`@${config.username}`)) {
                 comments[i].style.borderColor = "white";
                 comments[i].innerHTML = comments[i].innerHTML.replace(
                     `@${config.username}`,
