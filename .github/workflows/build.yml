@@ -39,6 +39,6 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "pre-release"
         prerelease: true
-        title: "Pre-release Build"
+        title: "Pre-release Build (rewrite W.I.P.)"
         files: |
           nyaa-util.zip
