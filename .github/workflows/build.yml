@@ -28,3 +28,17 @@ jobs:
     - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: build # will run `yarn build` command
+    
+    - name: "Package the extension"
+      run: |
+          zip -r nyaa-util.zip dist
+    
+    - name: Create pre-release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "pre-release"
+        prerelease: true
+        title: "Pre-release Build"
+        files: |
+          nyaa-util.zip
