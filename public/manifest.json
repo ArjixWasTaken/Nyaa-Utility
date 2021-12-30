@@ -3,7 +3,7 @@
 
     "name": "Nyaan",
     "description": "An extension that customizes nyaa.",
-    "version": "1.1",
+    "version": "1.0",
     "author": "Arjix",
 
     "options_ui": {
@@ -34,8 +34,6 @@
     "permissions": [
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*",
-        "https://meowinjapanese.cf/*",
-        "https://sukebei.meowinjapanese.cf/*",
         "unlimitedStorage",
         "storage",
         "notifications",
