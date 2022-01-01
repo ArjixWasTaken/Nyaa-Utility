@@ -7,6 +7,27 @@ interface torrent {
 }
 
 
+enum Scope {
+    Background,
+    Popup,
+    Web,
+    Content
+}
+
+
+const getScope = (): Scope => {
+    if (chrome && chrome.extension && chrome.extension.getBackgroundPage && chrome.extension.getBackgroundPage() === window) {
+        return Scope.Background
+    } else if (chrome && chrome.extension && chrome.extension.getBackgroundPage && chrome.extension.getBackgroundPage() !== window) {
+        return Scope.Popup
+    } else if (!chrome || !chrome.runtime || !chrome.runtime.onMessage) {
+        return Scope.Web
+    } else {
+        return Scope.Content
+    }
+}
+
+
 
 const filterOutDuplicates = (torrents: Array<torrent>): Array<torrent> => {
     // takes in an array of torrents and filters out duplicate objects, since Set cant do that
@@ -89,11 +110,7 @@ class Config {
     }
 
     constructor() {
-        // TODO: Detect if this is running in the background or not.
-        // If it is running in the background then set it to "Guest"
-        // Else scrape the user's username.
-        this.username = "Guest"
-
+        this.username = getScope() == Scope.Content ? (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim() : "Guest"
 
         this.loadConfig().then(() => {
             this.initialized = true
@@ -108,5 +125,7 @@ export default config
 export {
     config,
     Config,
-    torrent
+    torrent,
+    getScope,
+    Scope
 }

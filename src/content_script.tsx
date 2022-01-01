@@ -17,8 +17,6 @@ const allModules: Module[] = [
 
 export { allModules }
 
-// for now all modules are enabled
-// TODO: Make this customizable
 const enabledModules: String[] = allModules.map(mod => mod.id)
 
 config.liveSync()
