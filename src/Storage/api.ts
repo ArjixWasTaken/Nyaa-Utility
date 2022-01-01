@@ -16,6 +16,7 @@ enum Scope {
 
 
 const getScope = (): Scope => {
+    // https://stackoverflow.com/a/45310299
     if (chrome && chrome.extension && chrome.extension.getBackgroundPage && chrome.extension.getBackgroundPage() === window) {
         return Scope.Background
     } else if (chrome && chrome.extension && chrome.extension.getBackgroundPage && chrome.extension.getBackgroundPage() !== window) {
