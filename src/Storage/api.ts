@@ -2,7 +2,7 @@ import deepmerge from "deepmerge";
 import _ from "lodash";
 
 interface torrent {
-    id: number
+    url: string
     commentsCount: number
 }
 
@@ -32,11 +32,11 @@ const getScope = (): Scope => {
 
 const filterOutDuplicates = (torrents: Array<torrent>): Array<torrent> => {
     // takes in an array of torrents and filters out duplicate objects, since Set cant do that
-    const ids = Array<number>()
+    const ids = Array<string>()
 
     return torrents.map(torrent => {
-        if (!ids.includes(torrent.id)) {
-            ids.push(torrent.id)
+        if (!ids.includes(torrent.url)) {
+            ids.push(torrent.url)
             return torrent
         }
     }).filter(i => i != undefined) as Array<torrent>

@@ -1,5 +1,5 @@
 declare interface torrent {
-    id: number
+    url: string
     commentsCount: number
 }
 

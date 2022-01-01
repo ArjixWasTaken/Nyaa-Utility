@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Config, torrent } from "../Storage/api";
 import { Module } from "./index"
 import jQ from "jquery";
@@ -17,16 +17,15 @@ class NewCommentsNotifier implements Module {
     async inject(config?: Config) {
         if (config == undefined) return
 
-        const torrentId = window.location.href.match(this.shouldRun)?.[1]
-        const id = torrentId ? parseInt(torrentId, 10) : undefined
+        const url = window.location.href.match(/(https?:\/\/.*?view\/\d+)/)?.[1]
 
-        if (id) {
+        if (url) {
             // should always be true, but oh well
             var isSubscribed = false
 
             let found = false
             for (const torrent of config.settings.newCommentsNotifier) {
-                if (torrent.id == id) {
+                if (torrent.url == url) {
                     isSubscribed = true
                     found = true
                     break
@@ -49,7 +48,7 @@ class NewCommentsNotifier implements Module {
                 // to keep this updated on multiple tabs.
                 let found = false
                 for (const torrent of config.settings.newCommentsNotifier) {
-                    if (torrent.id == id) {
+                    if (torrent.url == url) {
                         isSubscribed = true
                         found = true
                         break
@@ -62,9 +61,9 @@ class NewCommentsNotifier implements Module {
 
             button.onclick = async () => {
                 if (!isSubscribed) {
-                    config.settings.newCommentsNotifier.push({id: id, commentsCount: Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")).length})
+                    config.settings.newCommentsNotifier.push({url: url, commentsCount: Array.from(document.querySelectorAll("div.panel.panel-default.comment-panel")).length})
                 } else {
-                    config.settings.newCommentsNotifier = config.settings.newCommentsNotifier.filter(t => t.id != id)
+                    config.settings.newCommentsNotifier = config.settings.newCommentsNotifier.filter(t => t.url != url)
                 }
 
                 await config.saveConfig()
@@ -83,7 +82,7 @@ class NewCommentsNotifier implements Module {
         let newCommentsCount = 0
 
         for (const torrent of torrents) {
-            const html = await (await fetch(`https://nyaa.si/view/${torrent.id}`)).text()
+            const html = await (await fetch(torrent.url)).text()
             const $ = cheerio.load(html)
             const comments = $("div.panel.panel-default.comment-panel").toArray().length
 
@@ -95,7 +94,7 @@ class NewCommentsNotifier implements Module {
 
 
                 for (const c of config.settings.newCommentsNotifier) {
-                    if (c.id == torrent.id) {
+                    if (c.url == torrent.url) {
                         c.commentsCount = comments
                         break
                     }

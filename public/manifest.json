@@ -3,8 +3,8 @@
 
     "name": "Nyaan",
     "description": "An extension that customizes nyaa.",
-    "version": "1.0",
-    "author": "Arjix",
+    "version": "1.2",
+    "author": "ArjixWasTaken",
 
     "options_ui": {
         "page": "options.html"
