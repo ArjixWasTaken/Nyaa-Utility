@@ -44,25 +44,28 @@ const filterOutDuplicates = (torrents: Array<torrent>): Array<torrent> => {
 
 
 
+interface deadTorrentsRemover {
+    enabled: boolean
+    minimum: [number, number]
+    removeCondition: String
+}
+
+
+
+
 interface settings {
     blockedUsers: string[]
-    deadTorrentsRemover: {
-        removeTorrentsEnabled: boolean
-        minimumSeeders: number
-        minimumLeechers: number
-        torrentRemoveCondition: string
-    }
+    deadTorrentsRemover: deadTorrentsRemover
     newCommentsNotifier: Array<torrent>
 }
 
 
 const defaults = JSON.stringify(<settings> {
     blockedUsers: [],
-    deadTorrentsRemover: {
-        removeTorrentsEnabled: false,
-        minimumSeeders: 0,
-        minimumLeechers: 0,
-        torrentRemoveCondition: "both"
+    deadTorrentsRemover: <deadTorrentsRemover> {
+        enabled: false,
+        minimum: [0, 0],
+        removeCondition: "both"
     },
     newCommentsNotifier: Array<torrent>(),
 })
@@ -95,9 +98,37 @@ class Config {
             if (_.isEmpty(value)) {
                 // no config, set the defaults
                 await this.saveConfig()
+
+                // Check if the legacy config is present.
+                chrome.storage.local.get("NyaaUtilSettings", async (legacyConfig) => {
+                    return // for now this is disabled as it has not been tested, and not all the settings are transferred.
+                    if (_.isEmpty(legacyConfig)) return
+                    const NyaaUtilSettings = legacyConfig.NyaaUtilSettings.options
+
+                    this.settings.deadTorrentsRemover.enabled = NyaaUtilSettings.NyaaRemoveRule !== "disabled"
+                    if (this.settings.deadTorrentsRemover.enabled) this.settings.deadTorrentsRemover.removeCondition = NyaaUtilSettings.NyaaRemoveRule.replace("seeds", "seeders")
+
+                    this.settings.newCommentsNotifier = filterOutDuplicates(NyaaUtilSettings.subscribedThreads.entries.map((id: string, commentsCount: number) => {
+                        return <torrent> {
+                            url: `https://nyaa.si/view/${id}`,
+                            commentsCount
+                        }
+                    }))
+
+                    this.settings.blockedUsers = Array.from(new Set(NyaaUtilSettings.nyaaBlockedUsers))
+                    // These are the only settings that can be transferred as of now.
+
+                    chrome.storage.local.remove("NyaaUtilSettings")
+                    // After we are done migrating, we will remove the legacy settings.
+
+                    await this.saveConfig()
+                })
             } else {
                 this.settings = deepmerge(JSON.parse(defaults), value.NyaaUtilitiesRewrite) as settings
+
+                // Making sure that all the data is valid, because it is possible that deepmerge messed it up.
                 this.settings.newCommentsNotifier = filterOutDuplicates(this.settings.newCommentsNotifier)
+                this.settings.deadTorrentsRemover.minimum = value.NyaaUtilitiesRewrite.deadTorrentsRemover.minimum.splice(0, 2) as [number, number]
             }
             console.log("Nyaa-Util[Rewrite]:Config", this.settings)
         })

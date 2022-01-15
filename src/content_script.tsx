@@ -3,7 +3,7 @@ import { Module } from "./Modules/index"
 import CommentReplyBtn from "./Modules/commentReply"
 import UserTagsInComments from "./Modules/userTagsInComments"
 import BlockUser from "./Modules/blockUser"
-import DeadTorrentRemover from "./Modules/removeDeadTorrent"
+import DeadTorrentRemover from "./Modules/deadTorrentRemover"
 import bgNewCommentsNotifier from "./Modules/bgNewCommentsNotifier"
 import { config } from "./Storage/api"
 

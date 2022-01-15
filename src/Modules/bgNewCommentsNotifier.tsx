@@ -1,13 +1,20 @@
 import React from "react";
-import { Config, torrent } from "../Storage/api";
+import { Config } from "../Storage/api";
 import { Module } from "./index"
 import jQ from "jquery";
 import cheerio from "cheerio";
 
 
+function toInt(val: string): number {
+    let conv = parseInt(val + "", 10);
+    if (conv + "" == "NaN") return 0
+    return conv
+}
+
+
 class NewCommentsNotifier implements Module {
     id = "bgCheckForNewComments"
-    shouldRun = /\/view\/(\d+)/
+    shouldRun = /(?:\/view\/(\d+)|(?:((p|q|s|o)=)|(user\/)|(\.si\/?)$))/
     injectWithConfig = true;  // we need to know the tag of the user first.
     backgroundTaskInterval = 35 * 60;  // 35 minutes
 
@@ -20,8 +27,7 @@ class NewCommentsNotifier implements Module {
         const url = window.location.href.match(/(https?:\/\/.*?view\/\d+)/)?.[1]
 
         if (url) {
-            // should always be true, but oh well
-            var isSubscribed = false
+            var isSubscribed = config.settings.newCommentsNotifier.some(tt => tt.url == url)
 
             let found = false
             for (const torrent of config.settings.newCommentsNotifier) {
@@ -46,15 +52,7 @@ class NewCommentsNotifier implements Module {
 
             setInterval(() => {
                 // to keep this updated on multiple tabs.
-                let found = false
-                for (const torrent of config.settings.newCommentsNotifier) {
-                    if (torrent.url == url) {
-                        isSubscribed = true
-                        found = true
-                        break
-                    }
-                }
-                if (!found) isSubscribed = false
+                isSubscribed = config.settings.newCommentsNotifier.some(tt => tt.url == url)
                 button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
                 button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
             }, 200)
@@ -67,12 +65,65 @@ class NewCommentsNotifier implements Module {
                 }
 
                 await config.saveConfig()
-                window.location.reload()
             }
 
             const lastElem = jQ("body > div > div:nth-child(1) > div.panel-footer.clearfix > button, body > div > div:nth-child(1) > div.panel-footer.clearfix > a").last()
             lastElem.after(button)
 
+        } else {
+            // we are not in a torrent, but at the browse page
+
+            let torrents = Array.from(
+                document.querySelectorAll(
+                  "body > div > div.table-responsive > table > tbody > tr"
+                )
+              ) as Array<HTMLElement>;
+
+
+            for (const torrent of torrents) {
+                const torrentUrl = (torrent.querySelector(`a[href*="/view/"]`) as HTMLAnchorElement).href.match(/(https?:\/\/.*?view\/\d+)/)?.[1]
+                if (!torrentUrl) continue;
+
+                let isSubscribed = config.settings.newCommentsNotifier.some(tt => tt.url == torrentUrl)
+
+                const button = document.createElement("button")
+                button.type = "button"
+                button.className = "btn btn-xs btn-danger pull-right"
+                button.style.marginRight = "10px"
+                button.style.border = "none"
+                button.style.fontSize = "80%"
+                button.style.height = "20px"
+                button.style.width = "75px"
+                button.style.float = "right"
+                button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
+                button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
+
+                setInterval(() => {
+                    // to keep this updated on multiple tabs.
+                    let isSubscribedNew = config.settings.newCommentsNotifier.some(tt => tt.url == torrentUrl)
+                    if (isSubscribed != isSubscribedNew) {
+                        isSubscribed = isSubscribedNew
+                        button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
+                        button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
+                    }
+                }, 200)
+
+
+                button.onclick = async () => {
+                    if (!isSubscribed) {
+                        config.settings.newCommentsNotifier.push( {
+                            url: torrentUrl,
+                            commentsCount: toInt(jQ(torrent).find(`a.comments`).text())
+                        })
+                    } else {
+                        config.settings.newCommentsNotifier = config.settings.newCommentsNotifier.filter(tt => tt.url != torrentUrl)
+                    }
+
+                    await config.saveConfig()
+                }
+
+                jQ(torrent).find(`[colspan="2"] > a`).first().before(button)
+            }
         }
     }
 

@@ -4,6 +4,13 @@ import { allModules } from "./content_script"
 import { config } from "./Storage/api"
 
 
+
+const optionsStyle = {
+    width: "100%",
+}
+
+
+
 const divStyle = {
     border: "1px solid black",
 };
@@ -20,13 +27,13 @@ const Options = () => {
     }, []);
 
     return (
-        <>
+        <div style={optionsStyle}>
             {options.map((option) => (
                 <div style={divStyle}>
                     {option}
                 </div>
             ))}
-        </>
+        </div>
     );
 };
 
