@@ -7,6 +7,18 @@ interface torrent {
 }
 
 
+interface FeedItem {
+    url: string
+    lastTorrentId: string
+}
+
+
+interface newTorrentsNotifier {
+    enabled: boolean
+    feeds: FeedItem[]
+}
+
+
 enum Scope {
     Background,
     Popup,
@@ -29,7 +41,6 @@ const getScope = (): Scope => {
 }
 
 
-
 const filterOutDuplicates = (torrents: Array<torrent>): Array<torrent> => {
     // takes in an array of torrents and filters out duplicate objects, since Set cant do that
     const ids = Array<string>()
@@ -42,23 +53,18 @@ const filterOutDuplicates = (torrents: Array<torrent>): Array<torrent> => {
     }).filter(i => i != undefined) as Array<torrent>
 }
 
-
-
 interface deadTorrentsRemover {
     enabled: boolean
     minimum: [number, number]
     removeCondition: String
 }
 
-
-
-
 interface settings {
     blockedUsers: string[]
     deadTorrentsRemover: deadTorrentsRemover
-    newCommentsNotifier: Array<torrent>
+    newCommentsNotifier: Array<torrent>,
+    newTorrentsNotifier: newTorrentsNotifier
 }
-
 
 const defaults = JSON.stringify(<settings> {
     blockedUsers: [],
@@ -68,15 +74,17 @@ const defaults = JSON.stringify(<settings> {
         removeCondition: "both"
     },
     newCommentsNotifier: Array<torrent>(),
+    newTorrentsNotifier: <newTorrentsNotifier> {
+        enabled: true,
+        feeds: []
+    }
 })
-
-
-
 
 class Config {
     username: string
     settings = JSON.parse(defaults) as settings
     initialized: Boolean = false
+    __listeners: Function[]
 
     onload(callback: Function): void {
         if (!this.initialized) {
@@ -87,7 +95,6 @@ class Config {
             callback();
         }
     }
-
 
     async saveConfig() {
         chrome.storage.local.set({ NyaaUtilitiesRewrite: this.settings})
@@ -118,9 +125,16 @@ class Config {
                     this.settings.blockedUsers = Array.from(new Set(NyaaUtilSettings.nyaaBlockedUsers))
                     // These are the only settings that can be transferred as of now.
 
+
+                    this.settings.newTorrentsNotifier.feeds = Object.entries(NyaaUtilSettings.FeedsTracker).map(([feed, lastTorrentId]) => {
+                        return {
+                            url: feed,
+                            lastTorrentId: lastTorrentId + ""
+                        }
+                    })
+
                     chrome.storage.local.remove("NyaaUtilSettings")
                     // After we are done migrating, we will remove the legacy settings.
-
                     await this.saveConfig()
                 })
             } else {
@@ -129,8 +143,13 @@ class Config {
                 // Making sure that all the data is valid, because it is possible that deepmerge messed it up.
                 this.settings.newCommentsNotifier = filterOutDuplicates(this.settings.newCommentsNotifier)
                 this.settings.deadTorrentsRemover.minimum = value.NyaaUtilitiesRewrite.deadTorrentsRemover.minimum.splice(0, 2) as [number, number]
+                let tmp: string[] = []
+                this.settings.newTorrentsNotifier.feeds = ((value.NyaaUtilitiesRewrite.newTorrentsNotifier.feeds ?? []) as Array<FeedItem>).filter(f => {
+                    if (tmp.includes(f.url)) return false
+                    tmp.push(f.url); return true
+                })
             }
-            console.log("Nyaa-Util[Rewrite]:Config", this.settings)
+            console.log("Nyaa-Util[Rewrite]: Config", this.settings)
         })
     }
 
@@ -138,11 +157,17 @@ class Config {
         // Keep the copy of the config up to date.
         chrome.storage.onChanged.addListener((changes: object, areaName: string) => {
             this.loadConfig()
+            this.__listeners.forEach(c => c())
         })
+    }
+
+    async onChange(callback: Function) {
+        this.__listeners.push(callback)
     }
 
     constructor() {
         this.username = getScope() == Scope.Content ? (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim() : "Guest"
+        this.__listeners = []
 
         this.loadConfig().then(() => {
             this.initialized = true

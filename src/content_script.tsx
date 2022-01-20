@@ -5,6 +5,7 @@ import UserTagsInComments from "./Modules/userTagsInComments"
 import BlockUser from "./Modules/blockUser"
 import DeadTorrentRemover from "./Modules/deadTorrentRemover"
 import bgNewCommentsNotifier from "./Modules/bgNewCommentsNotifier"
+import bgNewTorrentsNotifier from "./Modules/bgNewTorrentsNotifier"
 import { config } from "./Storage/api"
 
 const allModules: Module[] = [
@@ -12,7 +13,8 @@ const allModules: Module[] = [
     new UserTagsInComments(),
     new BlockUser(),
     new DeadTorrentRemover(),
-    new bgNewCommentsNotifier()
+    new bgNewCommentsNotifier(),
+    new bgNewTorrentsNotifier()
 ]
 
 export { allModules }
@@ -30,7 +32,7 @@ allModules.forEach(module => {
                     console.info("loaded module " + module.id)
                 })
             } else {
-                module.inject()
+                module.inject(config)
                 console.info("loaded module " + module.id)
             }
         }

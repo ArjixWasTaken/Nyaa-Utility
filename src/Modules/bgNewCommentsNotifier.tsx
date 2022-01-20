@@ -15,12 +15,13 @@ function toInt(val: string): number {
 class NewCommentsNotifier implements Module {
     id = "bgCheckForNewComments"
     shouldRun = /(?:\/view\/(\d+)|(?:((p|q|s|o)=)|(user\/)|(\.si\/?)$))/
-    injectWithConfig = true;  // we need to know the tag of the user first.
+    injectWithConfig = true;
     backgroundTaskInterval = 35 * 60;  // 35 minutes
 
     options = (config: Config) => {
-        return <></>
+        return <></> // TODO: Add config for bgNewCommentsNotifier
     }
+
     async inject(config?: Config) {
         if (config == undefined) return
 
@@ -50,12 +51,12 @@ class NewCommentsNotifier implements Module {
             button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
             button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
 
-            setInterval(() => {
+            config.onChange(() => {
                 // to keep this updated on multiple tabs.
                 isSubscribed = config.settings.newCommentsNotifier.some(tt => tt.url == url)
                 button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
                 button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
-            }, 200)
+            })
 
             button.onclick = async () => {
                 if (!isSubscribed) {
@@ -98,7 +99,7 @@ class NewCommentsNotifier implements Module {
                 button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
                 button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
 
-                setInterval(() => {
+                config.onChange(() => {
                     // to keep this updated on multiple tabs.
                     let isSubscribedNew = config.settings.newCommentsNotifier.some(tt => tt.url == torrentUrl)
                     if (isSubscribed != isSubscribedNew) {
@@ -106,8 +107,7 @@ class NewCommentsNotifier implements Module {
                         button.style.backgroundColor = isSubscribed ? "" : "#4CAF50"
                         button.innerText = isSubscribed ? "Unsubscribe" : "Subscribe"
                     }
-                }, 200)
-
+                })
 
                 button.onclick = async () => {
                     if (!isSubscribed) {
@@ -133,8 +133,15 @@ class NewCommentsNotifier implements Module {
         let newCommentsCount = 0
 
         for (const torrent of torrents) {
-            const html = await (await fetch(torrent.url)).text()
-            const $ = cheerio.load(html)
+            const req =  await fetch(torrent.url, {
+                headers: {
+                    "User-Agent": navigator.userAgent,
+                },
+            })
+
+            if (!req.ok) break  // Most likely we got temporarily blocked by nyaa, retry in the next interval.
+
+            const $ = cheerio.load(await req.text())
             const comments = $("div.panel.panel-default.comment-panel").toArray().length
 
             if (torrent.commentsCount != comments) {
@@ -146,7 +153,7 @@ class NewCommentsNotifier implements Module {
 
                 for (const c of config.settings.newCommentsNotifier) {
                     if (c.url == torrent.url) {
-                        c.commentsCount = comments
+                        c.commentsCount = comments + 0
                         break
                     }
                 }
