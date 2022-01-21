@@ -17,6 +17,7 @@ interface NyaaTorrent {
     hash: string | undefined;
     magnet: string | undefined;
     torrentFile: string | undefined;
+    filesize: string | undefined;
 
     comments: NyaaComment[];
     description: string;
@@ -44,6 +45,7 @@ const getTorrentMeta = async (torrentUrl: string): Promise<NyaaTorrent | undefin
     const hash = panel.find(".row:last-of-type > .col-md-5").text()?.trim()
     const magnet = $(`.panel-footer > [href^="magnet:"]`).attr("href")
     const torrentFile = $(`.panel-footer > a[href$=".torrent"]`).attr("href")
+    const filesize = panel.find(`.row:nth-child(4) > .col-md-5`).text()
 
     const description = $(`#torrent-description[markdown-text]`).text()?.trim()
 
@@ -66,6 +68,7 @@ const getTorrentMeta = async (torrentUrl: string): Promise<NyaaTorrent | undefin
         hash,
         magnet,
         torrentFile,
+        filesize,
 
         comments,
         description
