@@ -1,8 +1,8 @@
-import React from "react";
+import { getTorrentMeta } from "../API/TorrentMetadata"
 import { Config } from "../Storage/api";
 import { Module } from "./index"
+import React from "react";
 import jQ from "jquery";
-import cheerio from "cheerio";
 
 
 function toInt(val: string): number {
@@ -133,27 +133,19 @@ class NewCommentsNotifier implements Module {
         let newCommentsCount = 0
 
         for (const torrent of torrents) {
-            const req =  await fetch(torrent.url, {
-                headers: {
-                    "User-Agent": navigator.userAgent,
-                },
-            })
+            const meta = await getTorrentMeta(torrent.url)
 
-            if (!req.ok) break  // Most likely we got temporarily blocked by nyaa, retry in the next interval.
+            if (!meta) break  // Most likely we got temporarily blocked by nyaa, retry in the next interval.
 
-            const $ = cheerio.load(await req.text())
-            const comments = $("div.panel.panel-default.comment-panel").toArray().length
-
-            if (torrent.commentsCount != comments) {
+            if (torrent.commentsCount != meta.comments.length) {
                 updateCount++
-                if (comments - torrent.commentsCount > 0) {
-                    newCommentsCount += comments - torrent.commentsCount
+                if (meta.comments.length - torrent.commentsCount > 0) {
+                    newCommentsCount += meta.comments.length - torrent.commentsCount
                 }
-
 
                 for (const c of config.settings.newCommentsNotifier) {
                     if (c.url == torrent.url) {
-                        c.commentsCount = comments + 0
+                        c.commentsCount = meta.comments.length + 0
                         break
                     }
                 }

@@ -17,6 +17,7 @@
         "url": "https://github.com/ArjixWasTaken/Nyaa-Utility.git"
     },
     "dependencies": {
+        "@popperjs/core": "^2.11.2",
         "@types/jquery": "^3.5.10",
         "@types/lodash": "^4.14.178",
         "cheerio": "^1.0.0-rc.10",

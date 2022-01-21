@@ -6,6 +6,7 @@ import BlockUser from "./Modules/blockUser"
 import DeadTorrentRemover from "./Modules/deadTorrentRemover"
 import bgNewCommentsNotifier from "./Modules/bgNewCommentsNotifier"
 import bgNewTorrentsNotifier from "./Modules/bgNewTorrentsNotifier"
+import Tooliper from "./Modules/ToolTips"
 import { config } from "./Storage/api"
 
 const allModules: Module[] = [
@@ -14,7 +15,8 @@ const allModules: Module[] = [
     new BlockUser(),
     new DeadTorrentRemover(),
     new bgNewCommentsNotifier(),
-    new bgNewTorrentsNotifier()
+    new bgNewTorrentsNotifier(),
+    new Tooliper()
 ]
 
 export { allModules }
