@@ -1,6 +1,7 @@
-import React from "react";
 import { Config } from "../Storage/api";
 import { Module } from "./index";
+import React from "react";
+
 
 class DeadTorrentRemover implements Module {
   id = "deadTorrentRemover";
@@ -13,17 +14,18 @@ class DeadTorrentRemover implements Module {
     ) => {
       config.settings.deadTorrentsRemover.minimum[0] = countSeeders;
       config.settings.deadTorrentsRemover.minimum[1] = countLeechers;
-      await config.saveConfig();
     };
 
     const setEnabled = async (enabled: boolean) => {
       config.settings.deadTorrentsRemover.enabled = enabled;
       await config.saveConfig();
+      window.location.reload();
     };
 
     const setTorrentRemoveCondition = async (condition: string) => {
       config.settings.deadTorrentsRemover.removeCondition = condition;
       await config.saveConfig();
+      window.location.reload();
     };
 
 
