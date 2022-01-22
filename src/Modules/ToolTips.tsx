@@ -19,7 +19,12 @@ class Tooliper implements Module {
     async inject(config?: Config) {
         if (config == undefined) return;
         const selector = "div.table-responsive > table > tbody"
-        const markdownConverter = new showdown.Converter()
+        const markdownConverter = new showdown.Converter({
+            tables: true, strikethrough: true,
+            ghCodeBlocks: true, openLinksInNewWindow: true,
+            literalMidWordUnderscores: true, simplifiedAutoLink: true,
+            parseImgDimensions: true
+        })
 
         var timeout: number
         var popper: PopperInstance
@@ -68,7 +73,7 @@ class Tooliper implements Module {
                             comments += commentTemplateHTML
                               .replace("{COMMENT_INDEX}", (index+1) + "")
                               .replace("{COMMENT_AVATAR}", comment.avatar ?? "")
-                              .replace("{COMMENT_AUTHOR_LINK}", comment.author ? `https://${window.location.hostname}${comment.author}` : "")
+                              .replace("{COMMENT_AUTHOR_LINK}", comment.author ? `https://${window.location.hostname}/user/${comment.author}` : "")
                               .replace("{COMMENT_AUTHOR}", comment.author ?? "")
                               .replace("{COMMENT_TIMESTAMP}", comment.date + "")
                               .replace("{COMMENT_DATE}", new Date(parseFloat(comment.date + "") * 1000).toLocaleDateString())
@@ -104,7 +109,7 @@ class Tooliper implements Module {
                     jQ(currentToolTip).html(torrentTooltips.get(torrentId)!)
                     currentToolTip.style.position = "absolute";
                     currentToolTip.style.zIndex = "999"
-                    currentToolTip.style.width = "53.1%"
+                    currentToolTip.style.width = "25%"
                     currentToolTip.style.whiteSpace = "normal"
                     e.target.parentElement!.prepend(currentToolTip)
                     popper = createPopper(e.target.parentElement!, currentToolTip)
@@ -123,7 +128,7 @@ const templateHTML = `
         <div class="panel-heading">
             <h3 class="panel-title">{TORRENT_TITLE}</h3>
         </div>
-        <div class="panel-body" style="white-space: nowrap;">
+        <div class="panel-body" style="white-space: nowrap; max-height: 100px; overflow: auto;">
             <div class="row">
                 <div class="col-md-1">Submitter:</div>
                 <div class="col-md-5">
