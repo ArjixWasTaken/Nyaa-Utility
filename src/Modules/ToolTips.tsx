@@ -7,7 +7,7 @@ import jQ from "jquery";
 
 
 const getId = (a: HTMLAnchorElement): string | undefined => {
-    return a.href.match(/https?:\/\/.*?view\/(\d+)/)?.[1]
+    return a.href.match(/view\/(\d+)/)?.[1]
 }
 
 
@@ -18,7 +18,7 @@ class Tooliper implements Module {
 
     async inject(config?: Config) {
         if (config == undefined) return;
-        const selector = "body > div > div.table-responsive > table > tbody"
+        const selector = "div.table-responsive > table > tbody"
         const markdownConverter = new showdown.Converter()
 
         var timeout: number
@@ -53,9 +53,8 @@ class Tooliper implements Module {
 
             if (torrentId) {
                 if (!torrentTooltips.has(torrentId)) {
-                    const meta = await getTorrentMeta(torrentId)
+                    const meta = await getTorrentMeta(`https://${window.location.hostname}/view/${torrentId}`)
                     if (meta) {
-
                         const tr = e.target.parentElement!.parentElement!
                         const date = (tr.querySelector(".text-center:nth-child(5)") as HTMLElement).innerText
                         const seeds = (tr.querySelector(".text-center:nth-child(6)") as HTMLElement).innerText
