@@ -17,13 +17,8 @@
 
     "content_scripts": [
         {
-            "matches": [
-                "https://nyaa.si/*",
-                "https://sukebei.nyaa.si/*",
-                "https://meowinjapanese.cf/*",
-                "https://sukebei.meowinjapanese.cf/*"
-            ],
-            "js": ["js/vendor.js", "js/content_script.js"]
+            "js": ["js/vendor.js", "js/content_script.js"],
+            "matches": ["https://nyaa.si/*", "https://sukebei.nyaa.si/*"]
         }
     ],
 
@@ -32,11 +27,11 @@
     },
 
     "permissions": [
-        "https://nyaa.si/*",
-        "https://sukebei.nyaa.si/*",
-        "unlimitedStorage",
         "storage",
+        "background",
         "notifications",
-        "background"
+        "unlimitedStorage",
+        "https://nyaa.si/*",
+        "https://sukebei.nyaa.si/*"
     ]
 }
