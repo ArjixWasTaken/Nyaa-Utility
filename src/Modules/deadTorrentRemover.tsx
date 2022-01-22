@@ -14,19 +14,16 @@ class DeadTorrentRemover implements Module {
       config.settings.deadTorrentsRemover.minimum[0] = countSeeders;
       config.settings.deadTorrentsRemover.minimum[1] = countLeechers;
       await config.saveConfig();
-      window.location.reload();
     };
 
     const setEnabled = async (enabled: boolean) => {
       config.settings.deadTorrentsRemover.enabled = enabled;
       await config.saveConfig();
-      window.location.reload();
     };
 
     const setTorrentRemoveCondition = async (condition: string) => {
       config.settings.deadTorrentsRemover.removeCondition = condition;
       await config.saveConfig();
-      window.location.reload();
     };
 
 
