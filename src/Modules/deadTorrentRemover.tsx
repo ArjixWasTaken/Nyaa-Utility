@@ -14,6 +14,8 @@ class DeadTorrentRemover implements Module {
     ) => {
       config.settings.deadTorrentsRemover.minimum[0] = countSeeders;
       config.settings.deadTorrentsRemover.minimum[1] = countLeechers;
+      await config.saveConfig();
+      window.location.reload();
     };
 
     const setEnabled = async (enabled: boolean) => {
