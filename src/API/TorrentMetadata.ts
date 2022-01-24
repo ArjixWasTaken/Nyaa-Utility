@@ -13,6 +13,9 @@ interface NyaaTorrent {
     title: string;
     author: string | undefined;
     date: string | undefined;
+    seeds: string | undefined;
+    leeches: string | undefined;
+    completed: string | undefined;
 
     hash: string | undefined;
     magnet: string | undefined;
@@ -64,6 +67,9 @@ const getTorrentMeta = async (torrentUrl: string): Promise<NyaaTorrent | undefin
         author,
         title,
         date,
+        seeds: undefined,
+        leeches: undefined,
+        completed: undefined,
 
         hash,
         magnet,

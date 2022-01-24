@@ -33,5 +33,6 @@
         "unlimitedStorage",
         "https://nyaa.si/*",
         "https://sukebei.nyaa.si/*"
-    ]
+    ],
+    "web_accessible_resources": ["assets/*"]
 }

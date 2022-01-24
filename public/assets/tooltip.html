@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function importParentStyles() {
+                // https://stackoverflow.com/a/28217534
+                var parentStyleSheets = parent.document.styleSheets;
+                var cssString = "";
+                for (var i = 0, count = parentStyleSheets.length; i < count; ++i) {
+                    if (parentStyleSheets[i].cssRules) {
+                        var cssRules = parentStyleSheets[i].cssRules;
+                        for (var j = 0, countJ = cssRules.length; j < countJ; ++j)
+                            cssString += cssRules[j].cssText;
+                    }
+                    else
+                        cssString += parentStyleSheets[i].cssText;  // IE8 and earlier
+                }
+                var style = document.createElement("style");
+                style.type = "text/css";
+                try {
+                    style.innerHTML = cssString;
+                }
+                catch (ex) {
+                    style.styleSheet.cssText = cssString;  // IE8 and earlier
+                }
+                document.getElementsByTagName("head")[0].appendChild(style);
+            }
+            addEventListener("load", importParentStyles)
+        </script>
+        <base target="_parent">
+    </head>
+    <body>
+        <div style="margin-bottom: 0px;">
+            <div class="panel panel-default" style="margin-bottom: 0px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{TORRENT_TITLE}</h3>
+                </div>
+                <div class="panel-body" style="white-space: nowrap; height: 15%;
+                    overflow: auto;">
+                    <div class="row">
+                        <div class="col-md-1">Submitter:</div>
+                        <div class="col-md-5">
+                            <a class="text-default" id="torrentAuthorAnchor"
+                                href="{TORRENT_SUBMITTER_LINK}"
+                                data-toggle="tooltip" title="User">{TORRENT_SUBMITTER_NAME}</a>
+                        </div>
+
+                        <div class="col-md-1">Info hash:</div>
+                        <div class="col-md-5">
+                            <kbd id="torrentInfoHash">{TORRENT_HASH}</kbd>
+                        </div>
+                    </div>
+                </div>
+                <!--/.panel-body -->
+            </div>
+
+            <div class="panel panel-default" style="margin-bottom: 0px; height:
+                70%;">
+                <div markdown-text class="panel-body" id="torrent-description"
+                    style="max-height: 400px; overflow: auto;">
+                    {DESCRIPTION}
+                </div>
+            </div>
+
+            <div id="comments" class="panel panel-default" style="margin-bottom:
+                0px; height: 15%;">
+                <div class="panel-heading">
+                    <a
+                        class="collapsed"
+                        data-toggle="collapse"
+                        role="button"
+                        aria-expanded="false"
+                        aria-controls="collapse-comments"
+                        onclick="document.querySelector('#collapse-comments').classList.toggle('in')">
+                        <h3 class="panel-title">Comments - {COMMENTS_COUNT}</h3>
+                    </a>
+                </div>
+                <div class="collapse" id="collapse-comments">
+                    <template>
+                        <div class="panel panel-default comment-panel"
+                            id="com-{COMMENT_INDEX}">
+                            <div class="panel-body">
+                                <div class="col-md-2">
+                                    <p>
+                                        <a class="text-default"
+                                            href="{COMMENT_AUTHOR_LINK}"
+                                            data-toggle="tooltip" title="User"
+                                            style="float: left; padding-right:
+                                            10%;">{COMMENT_AUTHOR}</a>
+                                    </p>
+                                    <img class="avatar" src="{COMMENT_AVATAR}"
+                                        alt="User">
+                                </div>
+                                <div class="col-md-10 comment">
+                                    <div class="row comment-details">
+                                        <a href="#com-{COMMENT_INDEX}">
+                                            <small data-timestamp-swap=""
+                                                data-timestamp="{COMMENT_TIMESTAMP}">{COMMENT_DATE}</small>
+                                        </a>
+                                    </div>
+                                    <div class="row comment-body">
+                                        <div markdown-text
+                                            class="comment-content">
+                                            {COMMENT_CONTENT}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
