@@ -109,7 +109,8 @@ class Tooliper implements Module {
                     jQ(currentToolTip).html(torrentTooltips.get(torrentId)!)
                     currentToolTip.style.position = "absolute";
                     currentToolTip.style.zIndex = "999"
-                    currentToolTip.style.width = "25%"
+                    currentToolTip.style.maxWidth = "50%"
+                    currentToolTip.style.width = "auto"
                     currentToolTip.style.whiteSpace = "normal"
                     e.target.parentElement!.prepend(currentToolTip)
                     popper = createPopper(e.target.parentElement!, currentToolTip)
@@ -122,88 +123,78 @@ class Tooliper implements Module {
 export default Tooliper;
 
 
-const templateHTML = `
-<div style="margin-bottom: 0px;">
-    <div class="panel panel-default" style="margin-bottom: 0px;">
-        <div class="panel-heading">
-            <h3 class="panel-title">{TORRENT_TITLE}</h3>
-        </div>
-        <div class="panel-body" style="white-space: nowrap; max-height: 100px; overflow: auto;">
+const templateHTML = `<div style="margin-bottom: 0px;">
+<div class="panel panel-default" style="margin-bottom: 0px;">
+    <div class="panel-heading">
+        <h3 class="panel-title">{TORRENT_TITLE}</h3>
+    </div>
+    <div class="panel-body" style="white-space: nowrap; overflow: auto;">
+        <div class="col">
             <div class="row">
-                <div class="col-md-1">Submitter:</div>
-                <div class="col-md-5">
+                <div class="col-md-3">Submitter:</div>
+                <div class="col-md-3">
                     <a class="text-default" href="{TORRENT_SUBMITTER_LINK}" data-toggle="tooltip" title="User">{TORRENT_SUBMITTER_NAME}</a>
                 </div>
-
-                <div class="col-md-1"></div>
-                <div class="col-md-5"></div>
             </div>
-
             <div class="row">
-                <div class="col-md-1">File size:</div>
-                <div class="col-md-5">{TORRENT_SIZE}</div>
-
-                <div class="col-md-1">Seeders:</div>
-                <div class="col-md-5">
+                <div class="col-md-3">File size:</div>
+                <div class="col-md-3">{TORRENT_SIZE}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Date:</div>
+                <div class="col-md-3" data-timestamp="{TORRENT_DATE}">
+                    {TORRENT_DATE_LOCAL}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Info hash:</div>
+                <div class="col-md-3">
+                    <kbd>{TORRENT_HASH}</kbd>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col-md-3">Seeders:</div>
+                <div class="col-md-3">
                     <span style="color: green">{TORRENT_SEEDERS}</span>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-md-1">Date:</div>
-                <div class="col-md-5" data-timestamp="{TORRENT_DATE}">
-                    {TORRENT_DATE_LOCAL}
-                </div>
-
-                <div class="col-md-1">Leechers:</div>
-                <div class="col-md-5">
+                <div class="col-md-3">Leechers:</div>
+                <div class="col-md-3">
                     <span style="color: red">{TORRENT_LEECHERS}</span>
                 </div>
-
             </div>
             <div class="row">
-                <div class="col-md-1">Info hash:</div>
-                <div class="col-md-5">
-                    <kbd>{TORRENT_HASH}</kbd>
-                </div>
-
-                <div class="col-md-1" style="transform: translateX(-10%);">Completed:</div>
-                <div class="col-md-5">{TORRENT_COMPLETED}</div>
+                <div class="col-md-3">Completed:</div>
+                <div class="col-md-3">{TORRENT_COMPLETED}</div>
             </div>
         </div>
-        <!--/.panel-body -->
-
-        <div class="panel-footer clearfix">
-            <a href="{TORRENT_FILE}"><i class="fa fa-download fa-fw"></i>Download Torrent</a>
-            or
-            <a href="{TORRENT_MAGNET}" class="card-footer-item"><i class="fa fa-magnet fa-fw"></i>Magnet</a>
-        </div>
     </div>
-
-    <div class="panel panel-default" style="margin-bottom: 0px;">
-        <div markdown-text class="panel-body" id="torrent-description" style="max-height: 400px; overflow: auto;">
-            {DESCRIPTION}
-        </div>
-    </div>
-
-    <div id="comments" class="panel panel-default" style="margin-bottom: 0px;">
-        <div class="panel-heading">
-            <a
-                class="collapsed"
-                data-toggle="collapse"
-                href="https://nyaa.si/view/{TORRENT_ID}#collapse-comments"
-                role="button"
-                aria-expanded="false"
-                aria-controls="collapse-comments">
-                <h3 class="panel-title">Comments - {COMMENTS_COUNT}</h3>
-            </a>
-        </div>
-        <div class="collapse" id="collapse-comments">
-            {COMMENTS_HTML}
-        </div>
+    <!--/.panel-body -->
+    <div class="panel-footer clearfix">
+        <a href="{TORRENT_FILE}"><i class="fa fa-download fa-fw"></i>Download Torrent</a>
+        or
+        <a href="{TORRENT_MAGNET}" class="card-footer-item"><i class="fa fa-magnet fa-fw"></i>Magnet</a>
     </div>
 </div>
-`
+<div class="panel panel-default" style="margin-bottom: 0px;">
+    <div markdown-text class="panel-body" id="torrent-description" style="max-height: 400px; overflow: auto;">
+        {DESCRIPTION}
+    </div>
+</div>
+<div id="comments" class="panel panel-default" style="margin-bottom: 0px;">
+    <div class="panel-heading">
+        <a class="collapsed" data-toggle="collapse" href="https://nyaa.si/view/{TORRENT_ID}#collapse-comments" role="button" aria-expanded="false" aria-controls="collapse-comments">
+            <h3 class="panel-title">Comments - {COMMENTS_COUNT}</h3>
+        </a>
+    </div>
+    <div class="collapse" id="collapse-comments">
+        {COMMENTS_HTML}
+    </div>
+</div>
+</div>`
 
 const commentTemplateHTML = `
 <div class="panel panel-default comment-panel" id="com-{COMMENT_INDEX}">
