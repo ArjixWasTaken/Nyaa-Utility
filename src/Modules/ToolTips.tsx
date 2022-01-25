@@ -53,7 +53,7 @@ class Tooliper implements Module {
 
             tooltipDOM = currentToolTip.contentWindow!.document
 
-            jQ(selector + ` a[href*="/view/"]`).on( "mousemoveend", async (e) => {
+            jQ(selector + ` td > a[href*="/view/"]:last-of-type`).on( "mousemoveend", async (e) => {
                 // Remove previous tooltip
                 if (typeof popper !== 'undefined') popper.destroy()
                 jQ(currentToolTip).css("display", "none")
