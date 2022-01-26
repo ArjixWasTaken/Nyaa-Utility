@@ -1,5 +1,5 @@
 import { createPopper, Instance as PopperInstance } from "@popperjs/core";
-import { getTorrentMeta, NyaaTorrent } from "../API/TorrentMetadata"
+import { getTorrentMeta, NyaaTorrent, Folder, File } from "../API/TorrentMetadata"
 import { Config } from "../Storage/api";
 import { Module } from "./index";
 import showdown from "showdown"
@@ -8,6 +8,62 @@ import jQ from "jquery";
 const getId = (a: HTMLAnchorElement): string | undefined => {
     return a.href.match(/view\/(\d+)/)?.[1]
 }
+
+
+
+const prependIndent = (text: string, indent: number): string => {
+    const space = " ".repeat(indent)
+    return text.split("\n").map(it => {
+        if (it.trim() == "") {
+            if (it.length < space.length) {
+                return space
+            }
+            return it
+        }
+        return space + it
+    }).join("\n")
+}
+
+
+
+const trimIndent = (text: string): string => {
+    const lines = text.split("\n")
+    const temp = lines.filter(it => it.trim() != "").map(it => it.length - it.trim().length).sort((a, b) => a - b)
+    const indentation = temp.length == 0 ? 4 : temp[0]
+    return lines.map(it => it.replace(" ".repeat(indentation), "")).join("\n")
+}
+
+
+
+// prettier-ignore
+const generateHTMLfromFileFolderTree = (tree: Folder | File) => {
+    const inner = (fileFolderTree: Folder | File): string => {
+        if (fileFolderTree.type == "file") {
+            // return single file html
+            return prependIndent(trimIndent(`
+                <li>
+                    <i class="fa fa-file"></i>${fileFolderTree.name} <span class="file-size">(${(fileFolderTree as File).size})</span>
+                </li>`),
+            8)
+
+        } else {
+            // return folder html
+            return trimIndent(`
+                <li>
+                    <a href class="folder"><i class="fa fa-folder"></i>${fileFolderTree.name}</a>
+                    <ul>
+                        ${prependIndent((fileFolderTree as Folder).folders.map(inner).join("\n"), 4*5)}
+                        ${prependIndent((fileFolderTree as Folder).files.map(inner).join("\n"), 4*5)}
+                    </ul>
+                </li>
+            `)
+        }
+    }
+
+
+    return `<ul>${inner(tree)}</ul>`;
+};
+
 
 class Tooliper implements Module {
     id = "tooltips";
@@ -109,7 +165,15 @@ class Tooliper implements Module {
                             jQ(commentNode).find(".comment-content").html(markdownConverter.makeHtml(comment.content))
 
                             tooltipDOM.querySelector("#collapse-comments")?.appendChild((commentNode as HTMLElement).querySelector("div")!)
-                        })
+                        });
+
+
+                        jQ(tooltipDOM).find(".torrent-file-list").html(generateHTMLfromFileFolderTree(meta.files));
+                        jQ(tooltipDOM).find('.torrent-file-list a.folder').on("click", function(e) {
+                            e.preventDefault();
+                            $(this).blur().children('i').toggleClass('fa-folder-open fa-folder');
+                            $(this).next().stop().slideToggle(250);
+                        });
 
                         popper = createPopper(e.target.parentElement!, currentToolTip)
                         jQ(currentToolTip).css("display", "")

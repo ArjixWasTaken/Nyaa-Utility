@@ -184,4 +184,4 @@ const getTorrentMeta = async (torrentUrl: string): Promise<NyaaTorrent | undefin
 }
 
 
-export { getTorrentMeta, NyaaTorrent, NyaaComment }
+export { getTorrentMeta, NyaaTorrent, NyaaComment, Folder, File }
