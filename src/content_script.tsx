@@ -7,9 +7,11 @@ import DeadTorrentRemover from "./Modules/deadTorrentRemover"
 import bgNewCommentsNotifier from "./Modules/bgNewCommentsNotifier"
 import bgNewTorrentsNotifier from "./Modules/bgNewTorrentsNotifier"
 import Tooliper from "./Modules/ToolTips"
+import InfiniteScroll from "./Modules/infiniteScroll"
 import { config } from "./Storage/api"
 
 const allModules: Module[] = [
+    new InfiniteScroll(),
     new CommentReplyBtn(),
     new UserTagsInComments(),
     new BlockUser(),

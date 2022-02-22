@@ -167,13 +167,15 @@ class Tooliper implements Module {
                             tooltipDOM.querySelector("#collapse-comments")?.appendChild((commentNode as HTMLElement).querySelector("div")!)
                         });
 
+                        jQ(tooltipDOM).find(".torrent-file-list.panel-body").html(generateHTMLfromFileFolderTree(meta.files))
 
-                        jQ(tooltipDOM).find(".torrent-file-list").html(generateHTMLfromFileFolderTree(meta.files));
-                        jQ(tooltipDOM).find('.torrent-file-list a.folder').on("click", function(e) {
-                            e.preventDefault();
-                            $(this).blur().children('i').toggleClass('fa-folder-open fa-folder');
-                            $(this).next().stop().slideToggle(250);
-                        });
+                        for (const folder of tooltipDOM.querySelectorAll('.torrent-file-list a.folder')) {
+                            folder.addEventListener("click", (e) => {
+                                e.preventDefault();
+                                jQ(e.target!).blur().children('i').toggleClass('fa-folder-open fa-folder');
+                                jQ(e.target!).next().stop().slideToggle(250);
+                            })
+                        }
 
                         popper = createPopper(e.target.parentElement!, currentToolTip)
                         jQ(currentToolTip).css("display", "")

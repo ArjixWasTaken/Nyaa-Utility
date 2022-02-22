@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet"
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-            integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="crossorigin="anonymous"
-            />
+            integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+            crossorigin="anonymous"
+        />
         <script>
             function importParentStyles() {
                 // https://stackoverflow.com/a/28217534
@@ -16,40 +18,35 @@
                 for (var i = 0, count = parentStyleSheets.length; i < count; ++i) {
                     if (parentStyleSheets[i].cssRules) {
                         var cssRules = parentStyleSheets[i].cssRules;
-                        for (var j = 0, countJ = cssRules.length; j < countJ; ++j)
-                            cssString += cssRules[j].cssText;
-                    }
-                    else
-                        cssString += parentStyleSheets[i].cssText;  // IE8 and earlier
+                        for (var j = 0, countJ = cssRules.length; j < countJ; ++j) cssString += cssRules[j].cssText;
+                    } else cssString += parentStyleSheets[i].cssText; // IE8 and earlier
                 }
                 var style = document.createElement("style");
                 style.type = "text/css";
                 try {
                     style.innerHTML = cssString;
-                }
-                catch (ex) {
-                    style.styleSheet.cssText = cssString;  // IE8 and earlier
+                } catch (ex) {
+                    style.styleSheet.cssText = cssString; // IE8 and earlier
                 }
                 document.getElementsByTagName("head")[0].appendChild(style);
             }
-            addEventListener("load", importParentStyles)
+            addEventListener("load", importParentStyles);
         </script>
-        <base target="_parent">
+        <base target="_parent" />
     </head>
     <body>
-        <div style="margin-bottom: 0px;">
-            <div class="panel panel-default" style="margin-bottom: 0px;">
+        <div style="margin-bottom: 0px">
+            <div class="panel panel-default" style="margin-bottom: 0px">
                 <div class="panel-heading">
                     <h3 class="panel-title">{TORRENT_TITLE}</h3>
                 </div>
-                <div class="panel-body" style="white-space: nowrap; height: 15%;
-                    overflow: auto;">
+                <div class="panel-body" style="white-space: nowrap; height: 15%; overflow: auto">
                     <div class="row">
                         <div class="col-md-1">Submitter:</div>
                         <div class="col-md-5">
-                            <a class="text-default" id="torrentAuthorAnchor"
-                                href="{TORRENT_SUBMITTER_LINK}"
-                                data-toggle="tooltip" title="User">{TORRENT_SUBMITTER_NAME}</a>
+                            <a class="text-default" id="torrentAuthorAnchor" href="{TORRENT_SUBMITTER_LINK}" data-toggle="tooltip" title="User"
+                                >{TORRENT_SUBMITTER_NAME}</a
+                            >
                         </div>
 
                         <div class="col-md-1">Info hash:</div>
@@ -61,22 +58,17 @@
                 <!--/.panel-body -->
             </div>
 
-            <div class="panel panel-default" style="margin-bottom: 0px; height:
-                70%;">
-                <div markdown-text class="panel-body" id="torrent-description"
-                    style="max-height: 400px; overflow: auto;">
-                    {DESCRIPTION}
-                </div>
+            <div class="panel panel-default" style="margin-bottom: 0px; height: 70%">
+                <div markdown-text class="panel-body" id="torrent-description" style="max-height: 400px; overflow: auto">{DESCRIPTION}</div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="margin-bottom: 0px; color: hsl(0, 0%, 80%)">
                 <div class="panel-heading">
                     <h3 class="panel-title">File list</h3>
                 </div>
-                <div class="torrent-file-list panel-body">
-                </div>
-            </div><!--/.panel -->
-            <div id="comments" class="panel panel-default" style="margin-bottom:
-                0px; height: 15%;">
+                <div class="torrent-file-list panel-body"></div>
+            </div>
+            <!--/.panel -->
+            <div id="comments" class="panel panel-default" style="margin-bottom: 0px; height: 15%">
                 <div class="panel-heading">
                     <a
                         class="collapsed"
@@ -84,38 +76,36 @@
                         role="button"
                         aria-expanded="false"
                         aria-controls="collapse-comments"
-                        onclick="document.querySelector('#collapse-comments').classList.toggle('in')">
+                        onclick="document.querySelector('#collapse-comments').classList.toggle('in')"
+                    >
                         <h3 class="panel-title">Comments - {COMMENTS_COUNT}</h3>
                     </a>
                 </div>
                 <div class="collapse" id="collapse-comments">
                     <template>
-                        <div class="panel panel-default comment-panel"
-                            id="com-{COMMENT_INDEX}">
+                        <div class="panel panel-default comment-panel" id="com-{COMMENT_INDEX}">
                             <div class="panel-body">
                                 <div class="col-md-2">
                                     <p>
-                                        <a class="text-default"
+                                        <a
+                                            class="text-default"
                                             href="{COMMENT_AUTHOR_LINK}"
-                                            data-toggle="tooltip" title="User"
-                                            style="float: left; padding-right:
-                                            10%;">{COMMENT_AUTHOR}</a>
+                                            data-toggle="tooltip"
+                                            title="User"
+                                            style="float: left; padding-right: 10%"
+                                            >{COMMENT_AUTHOR}</a
+                                        >
                                     </p>
-                                    <img class="avatar" src="{COMMENT_AVATAR}"
-                                        alt="User">
+                                    <img class="avatar" src="{COMMENT_AVATAR}" alt="User" />
                                 </div>
                                 <div class="col-md-10 comment">
                                     <div class="row comment-details">
                                         <a href="#com-{COMMENT_INDEX}">
-                                            <small data-timestamp-swap=""
-                                                data-timestamp="{COMMENT_TIMESTAMP}">{COMMENT_DATE}</small>
+                                            <small data-timestamp-swap="" data-timestamp="{COMMENT_TIMESTAMP}">{COMMENT_DATE}</small>
                                         </a>
                                     </div>
                                     <div class="row comment-body">
-                                        <div markdown-text
-                                            class="comment-content">
-                                            {COMMENT_CONTENT}
-                                        </div>
+                                        <div markdown-text class="comment-content">{COMMENT_CONTENT}</div>
                                     </div>
                                 </div>
                             </div>
