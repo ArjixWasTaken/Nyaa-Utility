@@ -15,6 +15,14 @@
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
+    "{{chrome}}.type": "module",
     "{{firefox}}.scripts": ["src/background.ts"]
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.nyaa.si/*"],
+      "js": ["src/content.ts"],
+      "run_at": "document_start"
+    }
+  ]
 }
