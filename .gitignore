@@ -27,3 +27,5 @@ yarn.lock
 # Config files
 .webextrc
 .webextrc.*
+
+*.lock
