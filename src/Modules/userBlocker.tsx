@@ -5,6 +5,11 @@ import _ from "lodash";
 class BlockUser implements Module {
     // TODO: Add a red tint to any blocked comment.
     injectCss?: string | undefined = `
+        .block-user-btn {
+            position: absolute;
+            transform: translateX(-100%) translateY(650%);
+        }
+
         .blocked-user > .panel-body > div > p {
             text-align: center;
             padding-block: 8px;
@@ -19,6 +24,14 @@ class BlockUser implements Module {
 
         .blocked-user > .panel-body > div > p > :not(a) {
             display: none;
+        }
+
+        .blocked-user > .panel-body .block-user-btn {
+            display: none;
+        }
+
+        .blocked-user > .panel-body:hover .block-user-btn {
+            display: unset;
         }
 
         .blocked-user > .panel-body:hover > div > p > :not(a) {
@@ -154,7 +167,7 @@ class BlockUser implements Module {
         // prettier-ignore
         let comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
 
-        config.onChange(() => {
+        const cb = () => {
             comments.forEach((comment: Element) => {
                 let user = (comment.querySelector("a") as HTMLAnchorElement)
                     .href;
@@ -170,6 +183,12 @@ class BlockUser implements Module {
                     comment.classList.remove("blocked-user");
                 }
             });
+        };
+
+        cb();
+
+        config.onChange(() => {
+            cb();
 
             // prettier-ignore
             comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
