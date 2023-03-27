@@ -27,19 +27,6 @@ enum Scope {
     Content
 }
 
-const getScope = (): Scope => {
-    // https://stackoverflow.com/a/45310299
-    if (browser && browser.extension) {
-        if (browser.extension.getBackgroundPage && browser.extension.getBackgroundPage() === window) return Scope.Background;
-        else return Scope.Popup;
-    } else if (!browser.runtime || !browser.runtime.onMessage) {
-        return Scope.Web
-    } else {
-        return Scope.Content
-    }
-}
-
-
 const filterOutDuplicates = (torrents: Array<Torrent>): Array<Torrent> => {
     // takes in an array of torrents and filters out duplicate objects, since Set cant do that
     const ids = Array<string>()
@@ -134,13 +121,23 @@ class Config {
     }
 
     constructor() {
-        this.username = getScope() == Scope.Content ? (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim() : "Guest"
+        this.username = "Guest"
 
-        if (Scope.Content && this.username != "Guest") {
-            this.username = `${window.location.hostname}/user/${this.username}`
+        if (typeof document !== "undefined") {
+            let found = false
+            let elem = document.querySelector("i.fa-user")
+            const interval = setInterval(() => {
+                elem = document.querySelector("i.fa-user")
+                if (!found && elem != null) {
+                    found = true
+                    this.username = (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim();
+                    if (this.username != "Guest")
+                        this.username = `${window.location.hostname}/user/${this.username}`
+                    console.log(this.username)
+                    clearInterval(interval)
+                }
+            }, 50)
         }
-
-        console.log("Username", this.username);
 
         this.__listeners = []
 
@@ -157,6 +154,5 @@ export default config
 export {
     config,
     Config,
-    getScope,
     Scope
 }
