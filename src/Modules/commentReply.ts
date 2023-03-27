@@ -7,7 +7,7 @@ export default class CommentReplyBtn implements Module {
     injectWithConfig = true;
     options = () => { }
     async inject(config?: Config) {
-        if (config == undefined) return
+        if (!config) return
 
         const textArea = document.querySelector("textarea#comment") as HTMLTextAreaElement;
         if (!textArea) return;

@@ -50,4 +50,4 @@ allModules.forEach(module => {
     } catch (error) {
         logger.error(`Error loading module '${module.id}'`, error)
     }
-})
+});
