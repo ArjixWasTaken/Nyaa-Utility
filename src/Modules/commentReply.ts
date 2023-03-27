@@ -1,7 +1,6 @@
 import type { Module } from "./index"
 import type { Config } from "../storage";
 
-
 export default class CommentReplyBtn implements Module {
     id = "commentReplyBtn"
     shouldRun: RegExp = /\/view\/\d+/
@@ -13,6 +12,10 @@ export default class CommentReplyBtn implements Module {
         const textArea = document.querySelector("textarea#comment") as HTMLTextAreaElement;
         if (!textArea) return;
 
+        if (import.meta.env.DEV)
+            document.querySelectorAll("#collapse-comments #mentionUser")
+                ?.forEach((m: Element) => m.remove());
+
         const comments = Array.prototype.filter.call(
             document.querySelectorAll("#collapse-comments div.panel.panel-default.comment-panel"),
             (comment: HTMLElement) => {
@@ -21,11 +24,11 @@ export default class CommentReplyBtn implements Module {
             }
         );
 
-        comments.forEach((comment) => {
-            if (import.meta.env.DEV)
-                comment.querySelectorAll("#mentionUser")?.forEach((m: HTMLElement) => m.remove());
+        for (const comment of comments) {
+            const user = comment.querySelector("div.col-md-2 > p > a") as HTMLElement;
+            if (!user) continue;
 
-            let user = comment.querySelector("div.col-md-2 > p > a") as HTMLElement;
+            const username = user.innerText.trim();
 
             Object.assign(user.style, {
                 float: "left",
@@ -40,16 +43,18 @@ export default class CommentReplyBtn implements Module {
                         value="Mention"
                         class="btn btn-xs btn-danger"
                         id="mentionUser"
-                        data-user="${user?.innerText.trim()}"
+                        data-user="${username}"
                         style="background-color: #646464; border: none;"
                     ></input>
                 `
             );
 
             (comment.querySelector("input") as HTMLElement)!.onclick = () => {
-                textArea.value += "@" + user?.innerText.trim() + " ";
+                if (!/\s$/.test(textArea.value)) textArea.value += " ";
+
+                textArea.value += `@${username} `;
                 window.scrollTo(0, document.body.scrollHeight);
             };
-        });
+        }
     }
 }
