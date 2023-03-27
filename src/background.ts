@@ -11,12 +11,11 @@ config.liveSync()
 // and for some reason the extension loads before that...
 browser.runtime.onInstalled.addListener(() => {
     setTimeout(() => {
-        if (import.meta && import.meta.env && import.meta.env.DEV) {
+        if (import.meta.env.DEV) {
             browser.tabs.query({}).then(tabs => {
                 if (!tabs.length) return;
-                const tab = tabs[0]
-
-                console.log({ tab, url: tab.url })
+                const tab = tabs.find(t => t?.url?.startsWith("about"));
+                if (!tab) return;
 
                 if (tab.url && !tab.url.includes("nyaa.si")) {
                     logger.debug("Redirecting to nyaa.si")

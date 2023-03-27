@@ -20,14 +20,12 @@ export interface NewTorrentsNotifier {
     feeds: FeedItem[]
 }
 
-
 enum Scope {
     Background,
     Popup,
     Web,
     Content
 }
-
 
 const getScope = (): Scope => {
     // https://stackoverflow.com/a/45310299
@@ -137,6 +135,13 @@ class Config {
 
     constructor() {
         this.username = getScope() == Scope.Content ? (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim() : "Guest"
+
+        if (Scope.Content && this.username != "Guest") {
+            this.username = `${window.location.hostname}/user/${this.username}`
+        }
+
+        console.log("Username", this.username);
+
         this.__listeners = []
 
         this.loadConfig().then(() => {

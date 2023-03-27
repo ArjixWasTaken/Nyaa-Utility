@@ -10,8 +10,10 @@ export interface Module {
 
     options?: (config: Config) => JSX.Element | void; // JSX to render in the options page.
     inject: (config?: Config) => void; // the body of the module
+    injectCss?: string;
 }
 
 import CommentReply from "./commentReply";
+import UserBlocker from "./userBlocker";
 
-export const allModules: Module[] = [new CommentReply];
+export const allModules: Module[] = [new CommentReply, new UserBlocker];
