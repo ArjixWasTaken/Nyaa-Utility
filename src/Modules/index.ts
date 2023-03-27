@@ -15,5 +15,6 @@ export interface Module {
 
 import CommentReply from "./commentReply";
 import UserBlocker from "./userBlocker";
+import UserMentions from "./userMentions";
 
-export const allModules: Module[] = [new CommentReply, new UserBlocker];
+export const allModules: Module[] = [new CommentReply, new UserBlocker, new UserMentions];
