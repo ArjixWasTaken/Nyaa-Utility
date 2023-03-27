@@ -29,3 +29,4 @@ yarn.lock
 .webextrc.*
 
 *.lock
+package-lock.json
