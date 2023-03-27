@@ -154,7 +154,7 @@ class BlockUser implements Module {
         // prettier-ignore
         let comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
 
-        setInterval(() => {
+        config.onChange(() => {
             comments.forEach((comment: Element) => {
                 let user = (comment.querySelector("a") as HTMLAnchorElement)
                     .href;
@@ -173,7 +173,7 @@ class BlockUser implements Module {
 
             // prettier-ignore
             comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
-        }, 400);
+        });
 
         comments.forEach((comment: Element) => {
             let user = (comment.querySelector("a") as HTMLAnchorElement).href;
@@ -194,7 +194,7 @@ class BlockUser implements Module {
                 },
             });
 
-            setInterval(() => {
+            config.onChange(() => {
                 if (
                     comment.classList.contains("blocked-user") &&
                     button.innerText == "Block User"
