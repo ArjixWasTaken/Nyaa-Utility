@@ -133,7 +133,6 @@ class Config {
                     this.username = (document.querySelector("i.fa-user")!.parentNode as HTMLElement).innerText.trim();
                     if (this.username != "Guest")
                         this.username = `${window.location.hostname}/user/${this.username}`
-                    console.log(this.username)
                     clearInterval(interval)
                 }
             }, 50)

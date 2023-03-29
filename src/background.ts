@@ -23,7 +23,7 @@ browser.runtime.onInstalled.addListener(() => {
                 }
             })
         }
-    }, 1000)
+    }, 2000)
 });
 
 interface Clock {

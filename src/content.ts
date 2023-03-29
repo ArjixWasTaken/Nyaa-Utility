@@ -23,16 +23,28 @@ const waitForElem = (selector: string, callback: (elem: Element) => void) => {
 
 allModules.forEach(module => {
     try {
-        if (enabledModules.includes(module.id) && module.shouldRun.test(window.location.href)) {
+        if (enabledModules.includes(module.id) && module.shouldRun.test(window.location.pathname)) {
             if (module.injectCss) {
                 waitForElem("head", (head) => {
                     head.querySelector(`#nyaa-util-module-${module.id}`)?.remove();
 
-                    head.appendChild(Object.assign(document.createElement("style"), {
-                        innerHTML: module.injectCss,
-                        type: "text/css",
-                        id: `nyaa-util-module-${module.id}`
-                    }));
+                    if (module.injectCss instanceof URL) {
+                        fetch(module.injectCss.toString())
+                            .then(res => res.text())
+                            .then(css => {
+                                head.appendChild(Object.assign(document.createElement("style"), {
+                                    innerHTML: css,
+                                    type: "text/css",
+                                    id: `nyaa-util-module-${module.id}`
+                                }));
+                            })
+                    } else {
+                        head.appendChild(Object.assign(document.createElement("style"), {
+                            innerHTML: module.injectCss,
+                            type: "text/css",
+                            id: `nyaa-util-module-${module.id}`
+                        }));
+                    }
                 })
             }
 
@@ -44,8 +56,8 @@ allModules.forEach(module => {
                 return;
             }
 
-            module.inject(config)
-            logger.info(`Loaded '${module.id}'`)
+            // Asynchronously inject the module
+            (async () => { module.inject(config); logger.info(`Loaded '${module.id}'`) })();
         }
     } catch (error) {
         logger.error(`Error loading module '${module.id}'`, error)

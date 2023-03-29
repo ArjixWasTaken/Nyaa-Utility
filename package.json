@@ -1,25 +1,26 @@
 {
-  "name": "nyaa-plus-plus",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "compile": "tsc --noEmit",
-    "dev": "vite",
-    "build": "vite build"
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.14.191",
-    "@types/webextension-polyfill": "^0.10.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.2.1",
-    "vite-plugin-solid": "^2.6.1",
-    "vite-plugin-web-extension": "^3.0.1",
-    "webextension-polyfill": "^0.10.0"
-  },
-  "dependencies": {
-    "deepmerge": "^4.3.1",
-    "lodash": "^4.17.21",
-    "solid-js": "^1.6.15"
-  }
+    "name": "nyaa-plus-plus",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "compile": "tsc --noEmit",
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.191",
+        "@types/webextension-polyfill": "^0.10.0",
+        "typescript": "^4.9.5",
+        "vite": "^4.2.1",
+        "vite-plugin-solid": "^2.6.1",
+        "vite-plugin-web-extension": "^3.0.1",
+        "webextension-polyfill": "^0.10.0"
+    },
+    "dependencies": {
+        "deepmerge": "^4.3.1",
+        "easymde": "^2.18.0",
+        "lodash": "^4.17.21",
+        "solid-js": "^1.6.15"
+    }
 }

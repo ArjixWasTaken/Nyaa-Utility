@@ -5,56 +5,67 @@ export default class CommentReplyBtn implements Module {
     id = "commentReplyBtn"
     shouldRun: RegExp = /\/view\/\d+/
     injectWithConfig = true;
-    options = () => { }
+
+    injectCss = `
+        .reply-bar {
+            width: 100%;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            background-color: rgb(76, 80, 87);
+            margin-bottom: 2px;
+            padding: 8px;
+
+            --radius: 15px;
+            /* jesus, why the browser-specific css? */
+            -webkit-border-top-left-radius: var(--radius);
+            -webkit-border-top-right-radius: var(--radius);
+            -moz-border-radius-topleft: var(--radius);
+            -moz-border-radius-topright: var(--radius);
+            border-top-left-radius: var(--radius);
+            border-top-right-radius: var(--radius);
+            /* sighs */
+        }
+
+        .reply-bar p, .reply-bar span {
+            margin-inline: 1%;
+            margin-block: 0;
+        }
+
+        .reply-bar > span {
+            cursor: pointer;
+            margin-top: 1px;
+            font-size: 14pt;
+        }
+
+        .hidden-reply-bar {
+            display: none;
+        }
+    `;
+
     async inject(config?: Config) {
         if (!config) return
 
-        const textArea = document.querySelector("textarea#comment") as HTMLTextAreaElement;
-        if (!textArea) return;
+        // prettier-ignore
+        const textarea = document.querySelector<HTMLTextAreaElement>("textarea#comment")
+        // prettier-ignore
+        const submitBtn = document.querySelector<HTMLButtonElement>(`.comment-box input[type="submit"]`);
+        // prettier-ignore
+        const form = document.querySelector<HTMLFormElement>("form.comment-box");
+        if (!textarea || !submitBtn || !form) return;
 
-        if (import.meta.env.DEV)
-            document.querySelectorAll("#collapse-comments #mentionUser")
-                ?.forEach((m: Element) => m.remove());
+        const replyBar = document.createElement("div");
+        textarea.parentElement?.insertBefore(replyBar, textarea);
 
-        const comments = Array.prototype.filter.call(
-            document.querySelectorAll("#collapse-comments div.panel.panel-default.comment-panel"),
-            (comment: HTMLElement) => {
-                let user = comment.querySelector("div.col-md-2 > p > a") as HTMLElement;
-                return user && user.innerText?.trim() != config.username;
-            }
-        );
+        Object.assign(replyBar, {
+            className: "reply-bar hidden-reply-bar",
+        });
 
-        for (const comment of comments) {
-            const user = comment.querySelector("div.col-md-2 > p > a") as HTMLElement;
-            if (!user) continue;
-
-            const username = user.innerText.trim();
-
-            Object.assign(user.style, {
-                float: "left",
-                paddingRight: "10%",
-            })
-
-            user.insertAdjacentHTML(
-                "afterend",
-                `
-                    <input
-                        type="button"
-                        value="Mention"
-                        class="btn btn-xs btn-danger"
-                        id="mentionUser"
-                        data-user="${username}"
-                        style="background-color: #646464; border: none;"
-                    ></input>
-                `
-            );
-
-            (comment.querySelector("input") as HTMLElement)!.onclick = () => {
-                if (!/\s$/.test(textArea.value)) textArea.value += " ";
-
-                textArea.value += `@${username} `;
-                window.scrollTo(0, document.body.scrollHeight);
-            };
-        }
+        replyBar.innerHTML = `
+            <p>
+                Replying to <strong><i class="reply-target">SomaHeir</i></strong>
+            </p>
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        `;
     }
 }

@@ -8,7 +8,7 @@ export default class CommentReplyBtn implements Module {
     injectWithConfig = true;
     options = () => {};
     injectCss = `
-        .mention {
+        .user-tag {
             background-color: #e7e4e4;
             cursor: pointer;
         }
@@ -16,30 +16,67 @@ export default class CommentReplyBtn implements Module {
     async inject(config?: Config) {
         if (!config) return;
 
-        if (import.meta.env.DEV)
+        // prettier-ignore
+        if (import.meta.env.DEV) {
             document
-                .querySelectorAll(".mention[data-comment]")
-                ?.forEach((m: Element) => m.remove());
+                .querySelectorAll<Element>(".mention[data-comment], #collapse-comments #tagUser")
+                ?.forEach((m) => m.remove());
+        }
 
+        // prettier-ignore
         const comments = Array.prototype.map
-            .call(
-                document.querySelectorAll(
-                    "#collapse-comments div.panel.panel-default.comment-panel"
-                ),
+            .call(document.querySelectorAll<HTMLElement>("#collapse-comments div.panel.panel-default.comment-panel"),
                 (comment: HTMLElement) => {
-                    let user = comment.querySelector<HTMLElement>(
-                        "div.col-md-2 > p > a"
-                    );
+                    let user = comment.querySelector<HTMLElement>("div.col-md-2 > p > a");
 
                     return (
                         user && {
-                            author: user?.innerText?.trim(),
+                            user,
+                            username: user?.innerText?.trim(),
                             node: comment,
                         }
                     );
                 }
             )
-            .filter(Boolean) as { author: string; node: HTMLElement }[];
+            .filter(Boolean) as {
+                user: HTMLElement;
+                username: string;
+                node: HTMLElement;
+            }[];
+
+        // prettier-ignore
+        const textArea = document.querySelector<HTMLTextAreaElement>("textarea#comment");
+        if (textArea) {
+            for (const { username, user, node: comment } of comments) {
+                if (!username || username == config.username) continue;
+
+                Object.assign(user.style, {
+                    float: "left",
+                    paddingRight: "10%",
+                });
+
+                user.insertAdjacentHTML(
+                    "afterend",
+                    `
+                        <input
+                            type="button"
+                            value="Ping"
+                            class="btn btn-xs btn-danger"
+                            id="tagUser"
+                            data-user="${username}"
+                            style="background-color: #646464; border: none;"
+                        ></input>
+                    `
+                );
+
+                comment.querySelector<HTMLElement>("input")!.onclick = () => {
+                    if (!/\s$/.test(textArea.value)) textArea.value += " ";
+
+                    textArea.value += `@${username} `;
+                    window.scrollTo(0, document.body.scrollHeight);
+                };
+            }
+        }
 
         for (const comment of comments) {
             const currentIdx = comments.indexOf(comment);
@@ -51,18 +88,16 @@ export default class CommentReplyBtn implements Module {
             let innerHTML = content.innerHTML;
             const textContent = content.innerText;
 
-            const mentions = Array.from(
-                textContent?.matchAll(/@([^\s]+)/g) || []
-            ).map((m) => m.pop());
+            // prettier-ignore
+            const mentions = Array.from(textContent.matchAll(/@([^\s]+)/g) || []).map((m) => m.pop());
 
             if (!mentions.length) continue;
-
             for (const mention of mentions) {
                 // prettier-ignore
                 const idx = _.findLastIndex(comments,
                     (c) => {
                         if (comments.indexOf(c) >= currentIdx) return false;
-                        return c.author?.toLocaleLowerCase() === mention?.toLocaleLowerCase()
+                        return c.username?.toLocaleLowerCase() === mention?.toLocaleLowerCase()
                     }
                 );
 
@@ -71,12 +106,12 @@ export default class CommentReplyBtn implements Module {
 
                 // prettier-ignore
                 innerHTML = innerHTML.replace(
-                    `@${comment.author}`,
-                    `<span class="mention" data-comment="${
+                    `@${comment.username}`,
+                    `<span class="user-tag" data-comment="${
                         comment.node
                             .querySelector<HTMLAnchorElement>(".comment-details a")
                             ?.href?.split("#")?.[1]
-                    }" onclick="document.querySelector('#'+this.dataset.comment).scrollIntoView({ behavior: 'smooth' });">@${comment.author}</span>`
+                    }" onclick="document.querySelector('#'+this.dataset.comment).scrollIntoView({ behavior: 'smooth' });">@${comment.username}</span>`
                 );
             }
 

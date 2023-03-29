@@ -4,12 +4,13 @@ import _ from "lodash";
 
 class BlockUser implements Module {
     // TODO: Add a red tint to any blocked comment.
-    injectCss?: string | undefined = `
+    injectCss = `
+/*
         .block-user-btn {
             position: absolute;
             transform: translateX(-100%) translateY(650%);
         }
-
+*/
         .blocked-user > .panel-body > div > p {
             text-align: center;
             padding-block: 8px;
@@ -77,51 +78,7 @@ class BlockUser implements Module {
     id = "blockUsers";
     shouldRun = /\/view\/\d+/;
     injectWithConfig = true; // we need to know the tag of the user first.
-    options = (config: Config) => {
-        const unblock = async (userToUnblock: String) => {
-            config.settings.blockedUsers = config.settings.blockedUsers.filter(
-                (user) => user != userToUnblock
-            );
-            await config.saveConfig();
-            window.location.reload();
-        };
 
-        const style = {
-            marginLeft: "20px",
-            backgroundColor: "#4caf50",
-            border: "none",
-            fontSize: "70%",
-            cursor: "pointer",
-        };
-
-        return (
-            <>
-                Blocked users:
-                <ul>
-                    {config.settings.blockedUsers.map((user) => {
-                        return (
-                            <li>
-                                <div>
-                                    <a href={`${user}`}>
-                                        {user.match(/user\/(.*)/)![1]}
-                                    </a>
-                                    <input
-                                        style={style}
-                                        type="button"
-                                        value="unblock"
-                                        onClick={() => unblock(user)}
-                                    />
-                                </div>
-                            </li>
-                        );
-                    })}
-                    {config.settings.blockedUsers.length == 0
-                        ? "No blocked users were found."
-                        : ""}
-                </ul>
-            </>
-        );
-    };
     toggleBlock(userLink: string, config: Config) {
         const username = _.last(userLink.split("/"));
 
@@ -167,7 +124,7 @@ class BlockUser implements Module {
         // prettier-ignore
         let comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
 
-        const cb = () => {
+        const update = () => {
             comments.forEach((comment: Element) => {
                 let user = (comment.querySelector("a") as HTMLAnchorElement)
                     .href;
@@ -185,10 +142,10 @@ class BlockUser implements Module {
             });
         };
 
-        cb();
+        update();
 
         config.onChange(() => {
-            cb();
+            update();
 
             // prettier-ignore
             comments = document.querySelectorAll("div.panel.panel-default.comment-panel");
