@@ -34,6 +34,8 @@ export default class CommentReplyBtn implements Module {
             theme: document.body.classList.contains("dark") ? "dark" : "light",
         });
 
+        Object.defineProperty(window, "markdownEditor", { writable: true, value: editor })
+
         submitBtn.type = "button";
         submitBtn.onclick = () => {
             if (state.isSubmitting) return;

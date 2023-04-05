@@ -1,6 +1,7 @@
 import type { Module } from "./index";
 import type { Config } from "../storage";
 import _ from "lodash";
+import EasyMDE from "easymde";
 
 export default class CommentReplyBtn implements Module {
     id = "userMentions";
@@ -70,9 +71,24 @@ export default class CommentReplyBtn implements Module {
                 );
 
                 comment.querySelector<HTMLElement>("input")!.onclick = () => {
-                    if (!/\s$/.test(textArea.value)) textArea.value += " ";
+                    let editor = {
+                        codemirror: {
+                            setValue: (v: string) => {
+                                textArea.value = v;
+                            },
+                            getValue: () => textArea.value,
+                        },
+                    } as EasyMDE;
 
-                    textArea.value += `@${username} `;
+                    if ("markdownEditor" in window)
+                        editor = window.markdownEditor as EasyMDE;
+
+                    let value = editor.codemirror.getValue();
+                    if (!/\s$/.test(textArea.value)) value += " ";
+
+                    value += `@${username} `;
+
+                    editor.codemirror.setValue(value);
                     window.scrollTo(0, document.body.scrollHeight);
                 };
             }

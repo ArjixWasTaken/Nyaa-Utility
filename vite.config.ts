@@ -21,7 +21,7 @@ export default defineConfig({
         webExtension({
             manifest: generateManifest,
             watchFilePaths: ["package.json", "manifest.json"],
-            browser: target
+            browser: target,
         }),
     ],
     build: {
