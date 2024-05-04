@@ -25,7 +25,14 @@ nyaaUtility.storage.system.onload(() => {
         $(user).after(mentionButton);
 
         comment.querySelector("input").onclick = () => {
-            textArea.value += "@" + user?.innerText.trim() + " ";
+            // Get the current URL
+            let currentUrl = window.location.href;
+            // strip anchors from the url if there are any
+            currentUrl = currentUrl.split('#')[0];
+            // Create a link to the current page with the comment id appended
+            let link = currentUrl + '#' + comment.id;
+            // Make the mention a markdown link to the comment
+            textArea.value += `[@${user?.innerText.trim()}](${link}) `;
             window.scrollTo(0, document.body.scrollHeight);
         };
     });
