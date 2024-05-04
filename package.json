@@ -22,5 +22,6 @@
         "easymde": "^2.18.0",
         "lodash": "^4.17.21",
         "solid-js": "^1.6.15"
-    }
+    },
+    "packageManager": "pnpm@8.15.2"
 }
