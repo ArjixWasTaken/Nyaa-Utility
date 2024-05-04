@@ -3,7 +3,7 @@ import type { Config } from "../storage";
 import EasyMDE from "easymde";
 import browser from "webextension-polyfill";
 
-export default class CommentReplyBtn implements Module {
+export default class BetterMarkdownEditor implements Module {
     id = "betterMarkdownEditor";
     shouldRun: RegExp = /\/view\/\d+/;
     injectWithConfig = true;
