@@ -12,6 +12,7 @@ themeUtil.onload(() => {
     Changes on the new version!:
     <ul>
         <li>Fixed a bug with the notifications. (There is a high chance that you have to <input class="btn btn-xs btn-danger" type="button" value="Reset"> all of your user data in order to fix this.)</li>
+        <li>The <input class="btn btn-xs btn-danger" type="button" style="background-color: #646464; border: none;" value="Mention"></input> button now creates a link to the exact comment it's a reply to.</li>
     </ul>
 </div>
 <h3 id="nyaa-getting-help">
@@ -91,7 +92,7 @@ themeUtil.onload(() => {
         <li>
             Adds a reply feature (in the comments), this feature implements the following.
             <ul>
-                <li>A  <input class="btn btn-xs btn-danger" type="button" style="background-color: #646464; border: none;" value="Mention"></input> button next to usernames, when clicked it appends the @username of said user.</li>
+                <li>A  <input class="btn btn-xs btn-danger" type="button" style="background-color: #646464; border: none;" value="Mention"></input> button next to usernames, when clicked it appends the @username of said user, as a link to the exact comment.</li>
                 <li>When a message contains your @username, that message becomes highlighted and the <mark>@username</mark> gets marked.</li>
             </ul>
         </li>
